@@ -4,6 +4,7 @@ local function reload_neozettel()
             package.loaded[k] = nil
         end
     end
+    require("neozettel").setup()
 end
 
 vim.api.nvim_create_user_command(
