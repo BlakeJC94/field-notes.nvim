@@ -38,11 +38,10 @@ Generally I structure my notes in the following manner:
     * This is most useful for stand-up notes
     * I can order and prioritise things in this format, which helps me ramble less
 * Weekly notes:
-    * Location for mind dumps, random thouths and ideas go here throughout the week
-    * PRiority idems to look at during the week will go here
+    * Location for mind dumps, random thoughts and ideas go here throughout the week
+    * Priority items to look at during the week will go here
 * Monthly notes:
     * Usually plans for the month ahead (and beyond) at a glance
-    * TODO: Write a function that expands this ninto dailes and weeklies for the next month
 * Everything else:
     * No subdirectories, zettelkasten method
         * Too lazy to maintain an `index.md`
