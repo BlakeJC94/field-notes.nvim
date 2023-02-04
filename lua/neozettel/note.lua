@@ -1,5 +1,8 @@
 local M = {}
 
+
+-- TODO access journal location from opts
+-- TODO refactor
 function M.note(keys)
     local in_str = keys.args
 
@@ -7,7 +10,7 @@ function M.note(keys)
     local note_path = ""
 
     -- Create notes directory if it doesn't exist
-    local notes_dir = os.getenv("HOME") .. '/Dropbox/Journals'
+    local notes_dir = require("neozettel.opts").get().journal_path
     os.execute("mkdir -p " .. notes_dir)
 
     -- Infer title if no input given
