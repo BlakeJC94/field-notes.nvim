@@ -6,7 +6,9 @@ A WIP plugin until otherwise stated.
 ## Motivation
 - I'd like to practice a bit more Lua programming
 - I want to learn more about testing frameworks in other languages
-- I want to learn more abotu neovim plugin structure in general
+- I want to learn more about Neovim plugin structure in general
+- I want to automate and sync my handwritten note-taking methods within my editor
+    - Less context switching when coding
 
 ## Journal structure
 Generally I structure my notes in the following manner:
@@ -57,9 +59,9 @@ Keeping my notes structured this way keeps it platform independent, and also wor
 an app such as [GitJournal](https://gitjournal.io/) or [Zettel Notes](https://znotes.thedoc.eu.org/)
 
 ## Planned features
-- Dynamic creation/opening of notes based on git branch or directory name
-- Goto/create daily, weekly, monthy
-- Link autocompletion in `[[..]]` syntax
+- [ ] Dynamic creation/opening of notes based on git branch or directory name
+- [ ] Goto/create daily, weekly, monthy
+- [ ] Link autocompletion in `[[..]]` syntax
 
 ### Other developments
 - Backtracking links?
