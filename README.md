@@ -1,4 +1,4 @@
-# kettle
+# NeoZettel
 A simple zettelkasten journal plugin for Neovim
 
 A WIP plugin until otherwise stated.
