@@ -1,8 +1,6 @@
-local M = {}
-
-function M.say_yo()
+local function say_yo()
     print('Yo!!')
-    print('FOO')
+    print('bar')
 end
 
-return M
+return say_yo
