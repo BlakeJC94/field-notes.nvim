@@ -1,2 +1,2 @@
 # kettle
-An opinionate zettelkasten journal plugin for neovim
+A simple zettelkasten journal plugin for neovim
