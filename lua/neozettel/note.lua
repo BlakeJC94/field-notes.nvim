@@ -12,8 +12,8 @@ function M.note(keys)
     local note_path
 
     -- Create notes directory if it doesn't exist
-    local notes_dir = opts.get().journal_path
-    utils.create_dir(notes_dir)
+    local journal_dir = opts.get().journal_dir
+    utils.create_dir(journal_dir)
 
     -- Infer title if no input given
     -- TODO Refactor
@@ -43,7 +43,7 @@ function M.note(keys)
 
     -- Flatten title for file_name matching/creation
     local flat_title = utils.slugify(title)
-    note_path = notes_dir .. '/' .. flat_title .. ".md"
+    note_path = journal_dir .. '/' .. flat_title .. ".md"
 
     -- Create new note with yaml header if doesn't exist yet
     -- TODO Replace this with a more robust template writer

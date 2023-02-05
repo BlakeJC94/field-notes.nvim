@@ -1,7 +1,7 @@
 local M = {}
 
 local default_opts = {
-    journal_path = os.getenv("HOME") .. '/Workspace/repos/journal',
+    journal_dir = os.getenv("HOME") .. '/Workspace/repos/journal',
 }
 
 local opts
@@ -12,7 +12,7 @@ local opts
 --
 -- @param config table with the schema
 -- {
---   journal_path = <path>,  -- Location of journal directory
+--   journal_dir = <path>,  -- Location of journal directory
 -- }
 ---@param user_opts table to override the default options
 function M.set(user_opts)
