@@ -1,5 +1,8 @@
 local M = {}
 
+local opts = require("neozettel.opts")
+local utils = require("neozettel.utils")
+
 function M.slugify(input_string)
     local output_string = string.lower(input_string)
     output_string = string.gsub(output_string, '[ %[%]()%{%}%\\%/-.,=%\'%\":;><]+', '_')
@@ -14,12 +17,11 @@ end
 function M.note(keys)
     local in_str = keys.args
 
-    local note_path = ""
+    local note_path
 
     -- Create notes directory if it doesn't exist
-    local notes_dir = require("neozettel.opts").get().journal_path
-    -- TODO ask before creating directories
-    os.execute("mkdir -p " .. notes_dir)
+    local notes_dir = opts.get().journal_path
+    utils.create_dir(notes_dir)
 
     -- Infer title if no input given
     local title = ""

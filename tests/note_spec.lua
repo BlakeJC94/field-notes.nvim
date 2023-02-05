@@ -58,6 +58,5 @@ describe(
                 assert.equals("foo_bar", slugify("foo,bar"))
             end
         )
-
     end
 )
