@@ -17,7 +17,6 @@ function M.daily(keys)
     daily_path = daily_dir .. '/' .. daily_filename .. ".md"
 
     -- Open in vertical split and move cursor to end of file
-    io.popen("touch" .. " " .. daily_path)
     utils.edit_in_split(daily_path, true)
 end
 

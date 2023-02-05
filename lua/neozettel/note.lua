@@ -45,7 +45,6 @@ function M.note(keys)
     local flat_title = utils.slugify(title)
     note_path = journal_dir .. '/' .. flat_title .. ".md"
 
-    io.popen("touch" .. " " .. note_path)
     -- Create new note with yaml header if doesn't exist yet
     -- TODO Replace this with a more robust template writer
     -- TODO Refactor
