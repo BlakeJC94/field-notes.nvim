@@ -1,19 +1,26 @@
 local M = {}
 
+local function slugify(input_string)
+    local output_string = string.lower(input_string)
+    output_string = string.gsub(output_string, '([ %[%]()%{%}%\\%/-.,=%\'%\":;><]+)', '_')
+    return output_string
+end
 
 -- TODO access journal location from opts
 -- TODO refactor
+-- TODO load template instead of manually writing yaml header
 function M.note(keys)
     local in_str = keys.args
 
-    local title = ""
     local note_path = ""
 
     -- Create notes directory if it doesn't exist
     local notes_dir = require("neozettel.opts").get().journal_path
+    -- TODO ask before creating directories
     os.execute("mkdir -p " .. notes_dir)
 
     -- Infer title if no input given
+    local title = ""
     if in_str == "" or in_str == nil then
         -- Try to infer title from git project
         local project = vim.fn.finddir('.git/..', vim.fn.expand('%:p:h') .. ';'):match('[^/]+$')
@@ -27,9 +34,9 @@ function M.note(keys)
             project = vim.fn.expand('%:p:h:t')
         end
         project = string.gsub(project, '^%.', '')  -- remove leading . if present
-        title = project .. branch
+        title = title .. project .. branch
     else
-        title = in_str
+        title = title .. in_str
     end
 
     if title == "" then
@@ -38,8 +45,7 @@ function M.note(keys)
     end
 
     -- Flatten title for file_name matching/creation
-    flat_title = string.lower(title)
-    flat_title = string.gsub(flat_title, '([ %[%]()%{%}%\\%/-.,=%\'%\":;><]+)', '_')
+    local flat_title = slugify(title)
 
     -- Check if note title already exists
     -- NOTE: could use `find [dir] -type for` with `-maxdepth` for this if multi levels needed
