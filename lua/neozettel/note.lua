@@ -3,14 +3,6 @@ local M = {}
 local opts = require("neozettel.opts")
 local utils = require("neozettel.utils")
 
-function M.slugify(input_string)
-    local output_string = string.lower(input_string)
-    output_string = string.gsub(output_string, '[ %[%]()%{%}%\\%/-.,=%\'%\":;><]+', '_')
-    output_string = string.gsub(output_string, '^[_]+', '')
-    output_string = string.gsub(output_string, '[_]+$', '')
-    return output_string
-end
-
 -- TODO access journal location from opts
 -- TODO refactor
 -- TODO load template instead of manually writing yaml header
@@ -49,7 +41,7 @@ function M.note(keys)
     end
 
     -- Flatten title for file_name matching/creation
-    local flat_title = M.slugify(title)
+    local flat_title = utils.slugify(title)
 
     -- Check if note title already exists
     -- NOTE: could use `find [dir] -type for` with `-maxdepth` for this if multi levels needed

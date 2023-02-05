@@ -1,7 +1,7 @@
 describe(
     "slugify",
     function()
-        local slugify = require("neozettel.note").slugify
+        local slugify = require("neozettel.utils").slugify
 
         it(
             "should lowercase words",
