@@ -67,9 +67,11 @@ an app such as [GitJournal](https://gitjournal.io/) or [Zettel Notes](https://zn
     - [X] Name of file inferred from directory/git branch if called without args
 - [X] Goto commands for new/existing daily/weekly/monthly notes
 - [X] Testing framework using `plenary.nvim` for core utilities
+- [ ] Universal `Neozettel` command Api (instead of several commands)
 
 ### 0.2.0
 - [ ] Templates for new notes
+- [ ] Commands to go back and forth chronologically
 
 ### Planned features
 - Link autocompletion in `[[..]]` syntax

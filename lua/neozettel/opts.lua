@@ -1,7 +1,7 @@
 local M = {}
 
 local default_opts = {
-    journal_dir = os.getenv("HOME") .. '/Workspace/repos/journal',
+    journal_dir = vim.fn.expand('~/Workspace/repos/journal'),
 }
 
 local opts
