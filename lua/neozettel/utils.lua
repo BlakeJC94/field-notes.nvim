@@ -8,6 +8,7 @@ function M.slugify(input_string)
     return output_string
 end
 
+-- TODO Test
 function M.create_dir(dir_path)
     if vim.fn.filereadable(dir_path) > 0 then
         error("Path at '" .. dir_path .. "' is a file, can't create directory here")
@@ -25,6 +26,7 @@ function M.create_dir(dir_path)
     end
 end
 
+-- TODO Test
 function M.edit_in_split(file_path, vert)
     vert = vert or false
     if vert then

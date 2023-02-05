@@ -16,7 +16,8 @@ function M.note(keys)
     utils.create_dir(notes_dir)
 
     -- Infer title if no input given
-    local title = ""
+    -- TODO Refactor
+    local title
     if in_str == "" or in_str == nil then
         -- Try to infer title from git project
         local project = vim.fn.finddir('.git/..', vim.fn.expand('%:p:h') .. ';'):match('[^/]+$')
@@ -30,37 +31,25 @@ function M.note(keys)
             project = vim.fn.expand('%:p:h:t')
         end
         project = string.gsub(project, '^%.', '')  -- remove leading . if present
-        title = title .. project .. branch
+        title = project .. branch
     else
-        title = title .. in_str
+        title = in_str
     end
 
     if title == "" then
-        print("Empty title recieved, aborting")
+        print("Empty title received, aborting")
         return
     end
 
     -- Flatten title for file_name matching/creation
     local flat_title = utils.slugify(title)
+    note_path = notes_dir .. '/' .. flat_title .. ".md"
 
-    -- Check if note title already exists
-    -- NOTE: could use `find [dir] -type for` with `-maxdepth` for this if multi levels needed
-    local notes = io.popen('ls -p ' .. notes_dir .. ' | grep -v /'):read('*a')
-    local file_title = ""
-    for file in string.gmatch(notes, '[^\n]+') do
-        -- Trim date and ext from loop file name
-        file_title = string.gsub(file, '%d%d%d%d_%d%d_%d%d_', '')
-        file_title = string.gsub(file_title, '%.%w+$', '')
-        if flat_title == file_title then
-            note_path = notes_dir .. '/' .. file
-            break
-        end
-    end
-
-    -- Create new note if title doesn't exist yet
-    if note_path == "" then
+    -- Create new note with yaml header if doesn't exist yet
+    -- TODO Replace this with a more robust template writer
+    -- TODO Refactor
+    if vim.fn.filereadable(note_path) == 0 then
         local date = io.popen("date -u +'%Y_%m_%d'"):read()
-        note_path = notes_dir .. '/' .. date .. '_' .. flat_title .. '.md'
         new_note = io.open(note_path, 'w')
         -- Write yaml header
         new_note:write("---\n")
