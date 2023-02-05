@@ -13,6 +13,5 @@ end
 
 M.note = require("neozettel.note").note
 M.daily = require("neozettel.daily").daily
-M.say_yo = require("neozettel.yo")
 
 return M

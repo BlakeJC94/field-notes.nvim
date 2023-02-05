@@ -8,13 +8,14 @@ local function reload_neozettel()
 end
 
 vim.api.nvim_create_user_command(
-    "Reload",
+    "ReloadNeoZettel",
     reload_neozettel,
     {force=true}
 )
 
 local function test_neozettel()
-    require("neozettel").say_yo()
+    print("TESTING")
+    --TODO
 end
 
 vim.api.nvim_create_user_command(

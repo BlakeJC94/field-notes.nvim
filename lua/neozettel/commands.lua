@@ -16,18 +16,9 @@ local function setup_daily_command()
     )
 end
 
-local function setup_yo_command()
-    vim.api.nvim_create_user_command(
-        "NeoZettelYo",
-        require("neozettel").say_yo,
-        {force=true}
-    )
-end
-
 function M.set()
     setup_note_command()
     setup_daily_command()
-    setup_yo_command()
 end
 
 return M
