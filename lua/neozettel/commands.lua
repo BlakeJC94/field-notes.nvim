@@ -16,9 +16,18 @@ local function setup_daily_command()
     )
 end
 
+local function setup_weekly_command()
+    vim.api.nvim_create_user_command(
+        "NeoZettelWeekly",
+        require("neozettel").weekly,
+        {force=true}
+    )
+end
+
 function M.set()
     setup_note_command()
     setup_daily_command()
+    setup_weekly_command()
 end
 
 return M

@@ -13,5 +13,6 @@ end
 
 M.note = require("neozettel.note").note
 M.daily = require("neozettel.daily").daily
+M.weekly = require("neozettel.weekly").weekly
 
 return M
