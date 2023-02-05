@@ -2,7 +2,9 @@ local M = {}
 
 function M.slugify(input_string)
     local output_string = string.lower(input_string)
-    output_string = string.gsub(output_string, '([ %[%]()%{%}%\\%/-.,=%\'%\":;><]+)', '_')
+    output_string = string.gsub(output_string, '[ %[%]()%{%}%\\%/-.,=%\'%\":;><]+', '_')
+    output_string = string.gsub(output_string, '^[_]+', '')
+    output_string = string.gsub(output_string, '[_]+$', '')
     return output_string
 end
 
