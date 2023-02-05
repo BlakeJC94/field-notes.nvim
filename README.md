@@ -58,13 +58,24 @@ essential to my workflow).
 Keeping my notes structured this way keeps it platform independent, and also works on my phone Using
 an app such as [GitJournal](https://gitjournal.io/) or [Zettel Notes](https://znotes.thedoc.eu.org/)
 
-## Planned features
-- [ ] Dynamic creation/opening of notes based on git branch or directory name
-- [ ] Goto/create daily, weekly, monthy
-- [ ] Link autocompletion in `[[..]]` syntax
+## Development roadmap
 
-### Other developments
-- Backtracking links?
+### 0.1.0
+- [X] Setup function with configurable `journal_dir`
+- [ ] Configurable daily/weekly/monthly locations
+- [X] Goto command for new/existing notes in a flat directory
+    - [X] Name of file inferred from directory/git branch if called without args
+- [ ] Goto commands for new/existing daily/weekly/monthly notes
+- [ ] Testing framework using `plenary.nvim` for core utilities
+
+### 0.2.0
+- [ ] Templates for new note
+
+### Planned features
+- Link autocompletion in `[[..]]` syntax
+- Telescope integration
+- Auto-append list of pages that link to a page
+- Syntax and function to insert line numbers of another file?
 
 ## Other recommended plugins
 - [renerocksai/telekasten.nvim](https://github.com/renerocksai/telekasten.nvim)
