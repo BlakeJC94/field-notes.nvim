@@ -25,4 +25,14 @@ function M.create_dir(dir_path)
     end
 end
 
+function M.edit_in_split(file_path, vert)
+    vert = vert or false
+    if vert then
+        vim.cmd.vsplit()
+    end
+    vim.cmd.edit(file_path)
+    -- TODO use vim.api.nvim_win_set_cursor(..) for this
+    vim.cmd.normal("G$")  -- bang needed?
+end
+
 return M
