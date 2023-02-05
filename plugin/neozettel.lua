@@ -3,7 +3,6 @@ if vim.g.loaded_neozettel then return end  -- Prevent loading file twice
 local save_cpo = vim.o.cpo  -- save user coptions
 vim.cmd.set("cpo&vim")  -- reset them to defaults
 
--- TODO remove this?
 -- vim.api.nvim_create_user_command(
 --     "NeoZettel",
 --     require("neozettel").say_yo,

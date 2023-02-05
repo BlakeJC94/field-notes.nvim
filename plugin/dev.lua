@@ -15,7 +15,6 @@ vim.api.nvim_create_user_command(
 
 local function test_neozettel()
     print("TESTING")
-    --TODO
 end
 
 vim.api.nvim_create_user_command(
