@@ -12,6 +12,7 @@ end
 -- M = vim.tbl_deep_extend("force", M, note_functions)
 
 M.note = require("neozettel.note").note
+M.daily = require("neozettel.daily").daily
 M.say_yo = require("neozettel.yo")
 
 return M
