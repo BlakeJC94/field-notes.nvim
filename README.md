@@ -65,11 +65,11 @@ an app such as [GitJournal](https://gitjournal.io/) or [Zettel Notes](https://zn
 - [ ] Configurable daily/weekly/monthly locations
 - [X] Goto command for new/existing notes in a flat directory
     - [X] Name of file inferred from directory/git branch if called without args
-- [ ] Goto commands for new/existing daily/weekly/monthly notes
-- [ ] Testing framework using `plenary.nvim` for core utilities
+- [X] Goto commands for new/existing daily/weekly/monthly notes
+- [X] Testing framework using `plenary.nvim` for core utilities
 
 ### 0.2.0
-- [ ] Templates for new note
+- [ ] Templates for new notes
 
 ### Planned features
 - Link autocompletion in `[[..]]` syntax
