@@ -32,7 +32,6 @@ function M.edit_in_split(file_path, vert)
     if vert then
         vim.cmd.vsplit()
     end
-    io.popen("touch" .. " " .. file_path)
     vim.cmd.edit(file_path)
     -- TODO use vim.api.nvim_win_set_cursor(..) for this
     vim.cmd.normal("G$")  -- bang needed?
