@@ -49,19 +49,19 @@ function M.note(keys)
     -- Create new note with yaml header if doesn't exist yet
     -- TODO Replace this with a more robust template writer
     -- TODO Refactor
-    -- if vim.fn.filereadable(note_path) == 0 then
-    --     local date = io.popen("date -u +'%Y_%m_%d'"):read()
-    --     new_note = io.open(note_path, 'w')
-    --     -- Write yaml header
-    --     new_note:write("---\n")
-    --     new_note:write("title: " .. title .. "\n")
-    --     new_note:write("date: " .. string.gsub(date, '_', '-') .. "\n")
-    --     new_note:write("tags:\n")
-    --     new_note:write("---\n\n")
-    --     -- Write title and close
-    --     new_note:write("# " .. title .. '\n\n\n')
-    --     new_note:close()
-    -- end
+    if vim.fn.filereadable(note_path) == 0 then
+        -- local date = io.popen("date -u +'%Y_%m_%d'"):read()
+        local new_note = io.open(note_path, 'w')
+        -- Write yaml header
+        -- new_note:write("---\n")
+        -- new_note:write("title: " .. title .. "\n")
+        -- new_note:write("date: " .. string.gsub(date, '_', '-') .. "\n")
+        -- new_note:write("tags:\n")
+        -- new_note:write("---\n\n")
+        -- Write title and close
+        new_note:write("# " .. title .. '\n\n\n')
+        new_note:close()
+    end
 
     -- Open in vertical split and move cursor to end of file
     utils.edit_in_split(note_path, true)
