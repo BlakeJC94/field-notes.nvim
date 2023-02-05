@@ -22,7 +22,7 @@ Generally I structure my notes in the following manner:
 │   └── 2023_W06.md
 ├── monthy
 │   ├── ...
-│   └── 2023-02.md
+│   └── 2023-M02.md
 ├── templates
 │   ├── daily.md
 │   ├── monthy.md

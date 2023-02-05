@@ -24,10 +24,19 @@ local function setup_weekly_command()
     )
 end
 
+local function setup_monthly_command()
+    vim.api.nvim_create_user_command(
+        "NeoZettelMonthly",
+        require("neozettel").monthly,
+        {force=true}
+    )
+end
+
 function M.set()
     setup_note_command()
     setup_daily_command()
     setup_weekly_command()
+    setup_monthly_command()
 end
 
 return M
