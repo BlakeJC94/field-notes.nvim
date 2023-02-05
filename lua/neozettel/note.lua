@@ -1,6 +1,6 @@
 local M = {}
 
-local function slugify(input_string)
+function M.slugify(input_string)
     local output_string = string.lower(input_string)
     output_string = string.gsub(output_string, '([ %[%]()%{%}%\\%/-.,=%\'%\":;><]+)', '_')
     return output_string
@@ -45,7 +45,7 @@ function M.note(keys)
     end
 
     -- Flatten title for file_name matching/creation
-    local flat_title = slugify(title)
+    local flat_title = M.slugify(title)
 
     -- Check if note title already exists
     -- NOTE: could use `find [dir] -type for` with `-maxdepth` for this if multi levels needed

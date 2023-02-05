@@ -8,9 +8,10 @@ function M.setup(config)
     commands.set()
 end
 
-local note_functions = require("neozettel.note")
-M = vim.tbl_deep_extend("force", M, note_functions)
+-- local note_functions = require("neozettel.note")
+-- M = vim.tbl_deep_extend("force", M, note_functions)
 
+M.note = require("neozettel.notes").note
 M.say_yo = require("neozettel.yo")
 
 return M
