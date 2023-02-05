@@ -13,7 +13,7 @@ function M.monthly(keys)
 
     -- TODO configurable date format
     -- TODO customisable filename
-    local monthly_filename = io.popen("date -u +'%Y-M%m'"):read()
+    local monthly_filename = io.popen("date +'%Y-M%m'"):read()
     monthly_path = monthly_dir .. '/' .. monthly_filename .. ".md"
 
     -- Open in vertical split and move cursor to end of file

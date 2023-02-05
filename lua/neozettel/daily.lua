@@ -13,7 +13,7 @@ function M.daily(keys)
 
     -- TODO configurable date format
     -- TODO customisable filename
-    local daily_filename = io.popen("date -u +'%Y-%m-%d'"):read()
+    local daily_filename = io.popen("date +'%Y-%m-%d'"):read()
     daily_path = daily_dir .. '/' .. daily_filename .. ".md"
 
     -- Open in vertical split and move cursor to end of file

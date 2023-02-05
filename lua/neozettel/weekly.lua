@@ -13,7 +13,7 @@ function M.weekly(keys)
 
     -- TODO configurable date format
     -- TODO customisable filename
-    local weekly_filename = io.popen("date -u +'%Y-W%W'"):read()
+    local weekly_filename = io.popen("date +'%Y-W%W'"):read()
     weekly_path = weekly_dir .. '/' .. weekly_filename .. ".md"
 
     -- Open in vertical split and move cursor to end of file
