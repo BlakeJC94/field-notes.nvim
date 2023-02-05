@@ -60,3 +60,21 @@ describe(
         )
     end
 )
+
+-- describe(
+--     "create_dir",
+--     function()
+--         local create_dir = require("neozettel.utils").create_dir
+--         -- TODO create a mock filesystem
+--         -- TODO mock vim api calls and returns
+
+--         -- it(
+--         --     "should lowercase words",
+--         --     function()
+--         --         assert.equals("foo", slugify("Foo"))
+--         --         assert.equals("bar", slugify("bAr"))
+--         --         assert.equals("baz", slugify("BAZ"))
+--         --     end
+--         -- )
+--     end
+-- )
