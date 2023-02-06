@@ -6,9 +6,7 @@ local utils = require("neozettel.utils")
 -- TODO access journal location from opts
 -- TODO refactor
 -- TODO load template instead of manually writing yaml header
-function M.note(keys)
-    local in_str = keys.args
-
+function M.note(in_str)
     local note_path
 
     -- Create notes directory if it doesn't exist

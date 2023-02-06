@@ -1,5 +1,13 @@
 local M = {}
 
+local function setup_command()
+    vim.api.nvim_create_user_command(
+        "NeoZettel",
+        require("neozettel").neozettel,
+        { force = true, nargs = '*' }
+    )
+end
+
 local function setup_note_command()
     vim.api.nvim_create_user_command(
         "NeoZettelNote",
@@ -33,6 +41,7 @@ local function setup_monthly_command()
 end
 
 function M.set()
+    setup_command()
     setup_note_command()
     setup_daily_command()
     setup_weekly_command()
