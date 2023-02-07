@@ -34,7 +34,10 @@ function M.edit_in_split(file_path, vert)
     end
     vim.cmd.edit(file_path)
     vim.cmd.lcd(vim.fn.expand("%:p:h"))
-    vim.cmd.normal("G$")  -- bang needed?
+
+    local n_lines = vim.api.nvim_buf_line_count(0)
+    local n_cols = #vim.api.nvim_buf_get_lines(0, line - 1, line, false)[1]
+    vim.api.nvim_win_set_cursor(0, {n_lines, n_cols})
 end
 
 return M
