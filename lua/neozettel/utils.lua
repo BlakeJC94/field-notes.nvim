@@ -33,7 +33,7 @@ function M.edit_in_split(file_path, vert)
         vim.cmd.vsplit()
     end
     vim.cmd.edit(file_path)
-    -- TODO use vim.api.nvim_win_set_cursor(..) for this
+    vim.cmd.lcd(vim.fn.expand("%:p:h"))
     vim.cmd.normal("G$")  -- bang needed?
 end
 
