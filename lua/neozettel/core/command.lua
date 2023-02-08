@@ -34,7 +34,7 @@ function M.neozettel(keys)
         local title = table.concat({unpack(fargs, 2)}, " ")  -- falls back to empty str
         note(title)
     else
-        local steps = 0 or rawget(fargs, 2)
+        local steps = rawget(fargs, 2) or 0
         journal(
             subcommand,
             opts.get().journal_date_title_formats[subcommand],
