@@ -77,6 +77,18 @@ function M.get_note_title()
     return project_name .. ": " .. branch_name
 end
 
+-- TODO is_git_dir
+-- git rev-parse --git-dir 2> /dev/null;
+function M.is_in_git_project()
+    local git_is_installed = (#M.quiet_run_shell("command -v git") > 0)
+    if not git_is_installed then return false end
+
+    local git_dir_found = (#M.quiet_run_shell("git rev-parse --git-dir") > 0)
+    if not git_dir_found then return false end
+
+    return true
+end
+
 -- Outputs a string
 function M.quiet_run_shell(cmd)
     local _
