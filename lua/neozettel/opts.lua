@@ -1,7 +1,12 @@
 local M = {}
 
 local default_opts = {
-    journal_dir = vim.fn.expand('~/Workspace/repos/journal'),
+    note_dir = vim.fn.expand('~/journal'),
+    journal_dirs = {
+        day = vim.fn.expand('~/journal/daily'),
+        week = vim.fn.expand('~/journal/weekly'),
+        month = vim.fn.expand('~/journal/monthly'),
+    }
 }
 
 local opts
@@ -10,6 +15,7 @@ local opts
 --
 -- Sets the options
 --
+--TODO update docs
 -- @param config table with the schema
 -- {
 --   journal_dir = <path>,  -- Location of journal directory

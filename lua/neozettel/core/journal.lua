@@ -4,12 +4,16 @@ local opts = require("neozettel.opts")
 local utils = require("neozettel.utils")
 
 
-function M.journal(file_dir, date_title_fmt)
+function M.journal(timescale, date_title_fmt, steps)
+    -- TODO check that timescale is one of 'day', 'week', 'month'
+    local file_dir = rawget(opts.get().journal_dirs, timescale)
+    if not file_dir then print("FATAL: Invalid timescale"); return end
+
     -- Create file directory if it doesn't exist
     utils.create_dir(file_dir)
 
-    -- TODO configurable date format
-    -- TODO customisable filename
+    local steps = steps or 0 -- TODO
+
     local date_cmd = "date +'" .. date_title_fmt .. "'"
     local title = io.popen(date_cmd):read()
     local filename = utils.slugify(title)
@@ -19,22 +23,17 @@ function M.journal(file_dir, date_title_fmt)
     utils.edit_in_split(file_path, true, title)
 end
 
--- TODO configurable daily dir
+-- TODO configurable title format
 function M.daily()
-    local file_dir = opts.get().journal_dir .. '/daily'
-    M.journal(file_dir, "%Y-%m-%d: %a")
+    M.journal('day', "%Y-%m-%d: %a")
 end
 
--- TODO configurable weekly dir
 function M.weekly()
-    local file_dir = opts.get().journal_dir .. '/weekly'
-    M.journal(file_dir, "%Y-W%W")
+    M.journal('week', "%Y-W%W")
 end
 
--- TODO configurable monthly dir
 function M.monthly()
-    local file_dir = opts.get().journal_dir .. '/monthly'
-    M.journal(file_dir, "%Y-M%m: %b")
+    M.journal('month', "%Y-M%m: %b")
 end
 
 return M
