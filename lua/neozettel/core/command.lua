@@ -1,9 +1,9 @@
 local M = {}
 
-M.SUBCOMMANDS = {
-    note = require("neozettel.core.note").note,
-    day = require("neozettel.core.journal").day,
-    week = require("neozettel.core.journal").week,
+local note = require("neozettel.core.note").note
+local journal = require("neozettel.core.journal").journal
+local opts = require("neozettel.opts")
+
 M.ALLOWED_SUBCOMMANDS = {
     "note",
     "day",
@@ -22,27 +22,25 @@ end
 
 function M.neozettel(keys)
     local fargs = keys.fargs
-    local status_ok, subcommand = M._validate_subcommand_from_args(fargs)
+    local subcommand = rawget(fargs, 1)
+    local status_ok = M._validate_subcommand(subcommand)
 
     if not status_ok then
-        local allowed_subcommands = vim.tbl_keys(M.SUBCOMMANDS)
-        table.sort(allowed_subcommands)
-        print("Warning: NeoZettel expects one of ", vim.inspect(allowed_subcommands))
+        print("Warning: NeoZettel expects one of ", vim.inspect(M.ALLOWED_SUBCOMMANDS))
         return
     end
 
     if subcommand == "note" then
-        local title = ""
-        if #fargs > 1 then title = table.concat({unpack(fargs, 2)}, " ") end
-        M.SUBCOMMANDS.note(title)
-        return
+        local title = table.concat({unpack(fargs, 2)}, " ")  -- falls back to empty str
+        note(title)
+    else
+        local steps = 0 or rawget(fargs, 2)
+        journal(
+            subcommand,
+            opts.get().journal_date_title_formats[subcommand],
+            steps
+        )
     end
-
-    local steps = 0
-    if #fargs > 1 then
-        steps = fargs[2]
-    end
-    M.SUBCOMMANDS[subcommand](steps)
 end
 
 return M
