@@ -4,40 +4,20 @@ local opts = require("neozettel.opts")
 local utils = require("neozettel.utils")
 
 -- TODO access journal location from opts
--- TODO refactor
 -- TODO load template instead of manually writing yaml header
+-- TODO write template in buffer instead of to file
 function M.note(in_str)
-    local note_path
+    local note_path, title
+
+    -- Infer title if no input given
+    title = in_str or utils.get_note_title() or ""
+
+    -- TODO make error handling more elegant
+    if title == "" then error("FATAL: Empty title received.") end
 
     -- Create notes directory if it doesn't exist
     local journal_dir = opts.get().journal_dir
     utils.create_dir(journal_dir)
-
-    -- Infer title if no input given
-    -- TODO Refactor
-    local title
-    if in_str == "" or in_str == nil then
-        -- Try to infer title from git project
-        local project = vim.fn.finddir('.git/..', vim.fn.expand('%:p:h') .. ';'):match('[^/]+$')
-
-        local branch = ""
-        if project ~= nil then
-            -- git project identified, get branch name and sep
-            branch = ', ' .. io.popen('git branch --show-current'):read()
-        else
-            -- No git found, use file_name for project and ignore branch
-            project = vim.fn.expand('%:p:h:t')
-        end
-        project = string.gsub(project, '^%.', '')  -- remove leading . if present
-        title = project .. branch
-    else
-        title = in_str
-    end
-
-    if title == "" then
-        print("Empty title received, aborting")
-        return
-    end
 
     -- Flatten title for file_name matching/creation
     local flat_title = utils.slugify(title)
@@ -45,6 +25,7 @@ function M.note(in_str)
 
     -- Create new note with yaml header if doesn't exist yet
     -- TODO Replace this with a more robust template writer
+    -- TODO fill buffer instead of writing to file **
     -- TODO Refactor
     if vim.fn.filereadable(note_path) == 0 then
         -- local date = io.popen("date -u +'%Y_%m_%d'"):read()
