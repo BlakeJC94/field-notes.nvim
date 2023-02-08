@@ -77,6 +77,21 @@ function M.get_note_title()
     return project_name .. ": " .. branch_name
 end
 
+-- Outputs a string
+function M.quiet_run_shell(cmd)
+    local _
+    cmd = cmd or ""
+    cmd, _ = string.gsub(cmd, ";$" , "")
+    local result = ""
+    if #cmd > 0 then
+        local quiet_stderr = "2> /dev/null"
+        cmd = cmd .. " " .. quiet_stderr
+        result = io.popen(cmd):read()
+    end
+    return result
+end
+
+
 return M
 
 -- TODO look into vim.uri_from_bufnr
