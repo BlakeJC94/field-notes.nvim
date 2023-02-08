@@ -17,7 +17,7 @@ function M.monthly(keys)
     monthly_path = monthly_dir .. '/' .. monthly_filename .. ".md"
 
     -- Open in vertical split and move cursor to end of file
-    utils.edit_in_split(monthly_path, true)
+    utils.edit_in_split(monthly_path, true, nil)
 end
 
 return M

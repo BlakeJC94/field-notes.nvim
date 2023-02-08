@@ -42,7 +42,7 @@ function M.note(in_str)
     end
 
     -- Open in vertical split and move cursor to end of file
-    utils.edit_in_split(note_path, true)
+    utils.edit_in_split(note_path, true, title)
 end
 
 return M

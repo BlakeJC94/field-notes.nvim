@@ -27,18 +27,22 @@ function M.create_dir(dir_path)
 end
 
 -- TODO Test
-function M.edit_in_split(file_path, vert)
+-- TODO Add template and keys to this instead of simply title
+function M.edit_in_split(file_path, vert, title)
     vert = vert or false
-    if vert then
-        vim.cmd.vsplit()
-    end
+    title = title or ""
+
+    if vert then vim.cmd.vsplit() else vim.cmd.split() end
     vim.cmd.edit(file_path)
     vim.cmd.lcd(vim.fn.expand("%:p:h"))
 
-    vim.cmd.normal("G$")
-    -- local n_lines = vim.api.nvim_buf_line_count(0)
-    -- local n_cols = #vim.api.nvim_buf_get_lines(0, n_lines - 1, n_lines, false)[1]
-    -- vim.api.nvim_win_set_cursor(0, {n_lines, n_cols})
+    -- TODO if the file_path doesn't exist yet, write the title to buffer
+    local file_path_exists = vim.fn.filereadable(file_path)
+    if file_path_exists == 0 and title ~= "" then
+        local lines = {"# " .. title, ""}
+        vim.api.nvim_buf_set_lines(0, 0, 0, true, lines)
+        vim.cmd.startinsert()
+    end
 end
 
 -- Infers project name and branch name from current directory

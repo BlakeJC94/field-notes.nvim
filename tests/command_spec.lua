@@ -7,7 +7,6 @@ describe("note command", function()
     it("opens a file when called with args in git dir", function()
         local utils = mock(require("neozettel.utils"), true)
         utils.slugify.returns("foo_bar")
-        -- utils.is_in_gir_dir.returns(true)
 
         vim.cmd("NeoZettel note foo bar")
 

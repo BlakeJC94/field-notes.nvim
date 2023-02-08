@@ -17,7 +17,7 @@ function M.weekly(keys)
     weekly_path = weekly_dir .. '/' .. weekly_filename .. ".md"
 
     -- Open in vertical split and move cursor to end of file
-    utils.edit_in_split(weekly_path, true)
+    utils.edit_in_split(weekly_path, true, nil)
 end
 
 return M

@@ -17,7 +17,7 @@ function M.daily(keys)
     daily_path = daily_dir .. '/' .. daily_filename .. ".md"
 
     -- Open in vertical split and move cursor to end of file
-    utils.edit_in_split(daily_path, true)
+    utils.edit_in_split(daily_path, true, nil)
 end
 
 return M
