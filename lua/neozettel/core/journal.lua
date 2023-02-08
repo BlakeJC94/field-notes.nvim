@@ -4,52 +4,37 @@ local opts = require("neozettel.opts")
 local utils = require("neozettel.utils")
 
 
-function M.daily(keys)
-    -- Create daily directory if it doesn't exist
-    -- TODO configurable daily dir
+function M.journal(file_dir, date_title_fmt)
+    -- Create file directory if it doesn't exist
+    utils.create_dir(file_dir)
+
+    -- TODO configurable date format
+    -- TODO customisable filename
+    local date_cmd = "date +'" .. date_title_fmt .. "'"
+    local title = io.popen(date_cmd):read()
+    local filename = utils.slugify(title)
+    local file_path = file_dir .. '/' .. filename .. ".md"
+
+    -- Open in vertical split and move cursor to end of file
+    utils.edit_in_split(file_path, true, title)
+end
+
+-- TODO configurable daily dir
+function M.daily()
     local file_dir = opts.get().journal_dir .. '/daily'
-    utils.create_dir(file_dir)
-
-    -- TODO configurable date format
-    -- TODO customisable filename
-    local title = io.popen("date +'%Y-%m-%d: %a'"):read()
-    local filename = utils.slugify(title)
-    local file_path = file_dir .. '/' .. filename .. ".md"
-
-    -- Open in vertical split and move cursor to end of file
-    utils.edit_in_split(file_path, true, title)
+    M.journal(file_dir, "%Y-%m-%d: %a")
 end
 
-function M.weekly(keys)
-    -- Create weekly directory if it doesn't exist
-    -- TODO configurable weekly dir
+-- TODO configurable weekly dir
+function M.weekly()
     local file_dir = opts.get().journal_dir .. '/weekly'
-    utils.create_dir(file_dir)
-
-    -- TODO configurable date format
-    -- TODO customisable filename
-    local title = io.popen("date +'%Y-W%W: %b'"):read()
-    local filename = utils.slugify(title)
-    local file_path = file_dir .. '/' .. filename .. ".md"
-
-    -- Open in vertical split and move cursor to end of file
-    utils.edit_in_split(file_path, true, nil)
+    M.journal(file_dir, "%Y-W%W")
 end
 
-function M.monthly(keys)
-    -- Create monthly directory if it doesn't exist
-    -- TODO configurable monthly dir
+-- TODO configurable monthly dir
+function M.monthly()
     local file_dir = opts.get().journal_dir .. '/monthly'
-    utils.create_dir(file_dir)
-
-    -- TODO configurable date format
-    -- TODO customisable filename
-    local title = io.popen("date +'%Y-M%m: %b'"):read()
-    local filename = utils.slugify(title)
-    local file_path = file_dir .. '/' .. filename .. ".md"
-
-    -- Open in vertical split and move cursor to end of file
-    utils.edit_in_split(file_path, true, title)
+    M.journal(file_dir, "%Y-M%m: %b")
 end
 
 return M
