@@ -3,9 +3,7 @@ local M = {}
 local opts = require("neozettel.opts")
 local utils = require("neozettel.utils")
 
--- TODO access journal location from opts
 -- TODO load template instead of manually writing yaml header
--- TODO write template in buffer instead of to file
 function M.note(in_str)
     local note_path, title
 
