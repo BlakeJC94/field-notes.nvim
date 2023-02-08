@@ -6,6 +6,11 @@ local default_opts = {
         day = vim.fn.expand('~/journal/daily'),
         week = vim.fn.expand('~/journal/weekly'),
         month = vim.fn.expand('~/journal/monthly'),
+    },
+    journal_date_title_formats = {
+        day = "%Y-%m-%d: %a",
+        week = "%Y-W%W",
+        month =  "%Y-M%m: %b",
     }
 }
 

@@ -22,7 +22,6 @@ function M.journal(timescale, date_title_fmt, steps)
     utils.edit_in_split(file_path, true, title)
 end
 
--- TODO configurable title format
 function M.day(steps)
     M.journal('day', "%Y-%m-%d: %a", steps)
 end
