@@ -51,22 +51,21 @@ end
 function M.get_note_title()
     local project_name, branch_name, _
 
-    -- Project name is either where the git dir is,
-    -- or where vim is currently opened.
-    local project_path = io.popen('git rev-parse --show-toplevel --quiet 2>/dev/null || pwd'):read()
-    local project_parent_dirs = vim.fn.split(project_path, '/')
-    local n_parents = #project_parent_dirs
-
-    branch_name = io.popen('git branch --show-current --quiet 2>/dev/null'):read()
-    if branch_name ~= nil then
+    local project_path
+    if M.is_in_git_project() then
         -- In a git project,
         -- project name will be the project directory
         -- and the branch name is the current branch
-        project_name = project_parent_dirs[n_parents]
+        project_path = M.quiet_run_shell('git rev-parse --show-toplevel --quiet')
+        project_name = project_path:match('[^/]+$')
+        branch_name = M.quiet_run_shell('git branch --show-current --quiet')
     else
         -- Not a git project,
         -- project name will be the upper directory
         -- and the branch name is the current directory
+        project_path = vim.cmd.pwd()
+        local project_parent_dirs = vim.fn.split(project_path, '/')
+        local n_parents = #project_parent_dirs
         project_name = project_parent_dirs[n_parents - 1] or ""
         branch_name = project_parent_dirs[n_parents] or ""
     end
