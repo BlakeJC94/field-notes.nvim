@@ -32,7 +32,11 @@ function M.neozettel(keys)
         return
     end
 
-    M.SUBCOMMANDS[subcommand]()
+    local steps = 0
+    if #fargs > 1 then
+        steps = fargs[2]
+    end
+    M.SUBCOMMANDS[subcommand](steps)
 end
 
 return M
