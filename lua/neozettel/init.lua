@@ -8,9 +8,6 @@ function M.setup(config)
     core.setup_command()
 end
 
--- local note_functions = require("neozettel.note")
--- M = vim.tbl_deep_extend("force", M, note_functions)
-
 M.neozettel = require("neozettel.core").neozettel
 
 return M
