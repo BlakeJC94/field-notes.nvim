@@ -41,8 +41,8 @@ function M.edit_in_split(file_path, vert, title)
     if file_path_exists == 0 and title ~= "" then
         local lines = {"# " .. title, ""}
         vim.api.nvim_buf_set_lines(0, 0, 0, true, lines)
-        vim.cmd.startinsert()
     end
+    vim.cmd.normal('G$')
 end
 
 -- Infers project name and branch name from current directory
