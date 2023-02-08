@@ -9,11 +9,11 @@ local utils = require("neozettel.utils")
 function M.note(in_str)
     local note_path, title
 
-    -- Infer title if no input given
-    title = in_str or utils.get_note_title() or ""
+    title = in_str or ""
+    if #title == 0 then title = utils.get_note_title() end
 
     -- TODO make error handling more elegant
-    if title == "" then error("FATAL: Empty title received.") end
+    if title == "" then print("FATAL: Empty title received."); return end
 
     -- Create notes directory if it doesn't exist
     local journal_dir = opts.get().journal_dir
