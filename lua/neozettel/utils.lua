@@ -80,3 +80,17 @@ end
 return M
 
 -- TODO look into vim.uri_from_bufnr
+-- TODO yaml header writer
+-- ```lua
+-- local date = io.popen("date -u +'%Y_%m_%d'"):read()
+-- local new_note = io.open(note_path, 'w')
+-- Write yaml header
+-- new_note:write("---\n")
+-- new_note:write("title: " .. title .. "\n")
+-- new_note:write("date: " .. string.gsub(date, '_', '-') .. "\n")
+-- new_note:write("tags:\n")
+-- new_note:write("---\n\n")
+-- Write title and close
+-- new_note:write("# " .. title .. '\n\n\n')
+-- new_note:close()
+-- ```
