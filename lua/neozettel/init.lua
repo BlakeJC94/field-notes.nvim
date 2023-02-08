@@ -1,11 +1,11 @@
 local M = {}
 
 local opts = require("neozettel.opts")
-local commands = require("neozettel.commands")
+local core = require("neozettel.core")
 
 function M.setup(config)
     opts.set(config or {})
-    commands.set()
+    core.setup_command()
 end
 
 -- local note_functions = require("neozettel.note")
