@@ -2,9 +2,9 @@ local M = {}
 
 M.SUBCOMMANDS = {
     note = require("neozettel.core.note").note,
-    daily = require("neozettel.core.journal").daily,
-    weekly = require("neozettel.core.journal").weekly,
-    monthly = require("neozettel.core.journal").monthly,
+    day = require("neozettel.core.journal").day,
+    week = require("neozettel.core.journal").week,
+    month = require("neozettel.core.journal").month,
 }
 
 function M._validate_subcommand_from_args(fargs)

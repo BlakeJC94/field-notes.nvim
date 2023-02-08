@@ -23,15 +23,15 @@ function M.journal(timescale, date_title_fmt, steps)
 end
 
 -- TODO configurable title format
-function M.daily(steps)
+function M.day(steps)
     M.journal('day', "%Y-%m-%d: %a", steps)
 end
 
-function M.weekly(steps)
+function M.week(steps)
     M.journal('week', "%Y-W%W", steps)
 end
 
-function M.monthly(steps)
+function M.month(steps)
     M.journal('month', "%Y-M%m: %b", steps)
 end
 
