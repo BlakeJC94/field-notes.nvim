@@ -6,6 +6,8 @@ local core = require("neozettel.core")
 function M.setup(config)
     opts.set(config or {})
     core.setup_command()
+    core.setup_note_command()
+    core.setup_journal_command()
 end
 
 M.neozettel = require("neozettel.core").neozettel
