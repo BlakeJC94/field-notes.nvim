@@ -25,7 +25,7 @@ function M.journal(keys)
 
     local title = utils.quiet_run_shell(date_cmd)
     local filename = utils.slugify(title)
-    local file_path = file_dir .. '/' .. filename .. '.' .. opts.get().file_extension)
+    local file_path = file_dir .. '/' .. filename .. '.' .. opts.get().file_extension
 
     -- Open in vertical split and move cursor to end of file
     utils.edit_in_split(file_path, true, title)
