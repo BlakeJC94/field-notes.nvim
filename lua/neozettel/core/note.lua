@@ -25,7 +25,8 @@ function M.note(keys)
     note_path = notes_dir .. '/' .. flat_title .. "." .. opts.get().file_extension
 
     -- Open in vertical split and move cursor to end of file
-    utils.edit_in_split(note_path, true, title)
+    vim.cmd.lcd(vim.fn.expand(opts.get().field_notes_path))
+    utils.edit_note(note_path, title)
 end
 
 return M

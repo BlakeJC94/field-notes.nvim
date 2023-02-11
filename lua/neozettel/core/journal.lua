@@ -27,20 +27,8 @@ function M.journal(keys)
     local filename = utils.slugify(title)
     local file_path = file_dir .. '/' .. filename .. '.' .. opts.get().file_extension
 
-    -- Open in vertical split and move cursor to end of file
-    utils.edit_in_split(file_path, true, title)
-end
-
-function M.day(steps)
-    M.journal('day', "%Y-%m-%d: %a", steps)
-end
-
-function M.week(steps)
-    M.journal('week', "%Y-W%W", steps)
-end
-
-function M.month(steps)
-    M.journal('month', "%Y-M%m: %b", steps)
+    vim.cmd.lcd(vim.fn.expand(opts.get().field_notes_path))
+    utils.edit_note(file_path, title)
 end
 
 return M

@@ -28,14 +28,10 @@ end
 
 -- TODO Test
 -- TODO Add template and keys to this instead of simply title
-function M.edit_in_split(file_path, vert, title)
-    vert = vert or false
+function M.edit_note(file_path, title)
     title = title or ""
 
-    -- TODO remove vert
-    -- if vert then vim.cmd.vsplit() else vim.cmd.split() end
     vim.cmd.edit(file_path)
-    vim.cmd.lcd(vim.fn.expand("%:p:h"))
 
     -- TODO if the file_path doesn't exist yet, write the title to buffer
     local file_path_exists = vim.fn.filereadable(file_path)

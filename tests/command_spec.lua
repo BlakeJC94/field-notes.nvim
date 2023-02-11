@@ -10,6 +10,6 @@ describe("note command", function()
 
         vim.cmd("NeoZettel note foo bar")
 
-        assert.stub(utils.edit_in_split).was_called(1)
+        assert.stub(utils.edit_file).was_called(1)
     end)
 end)
