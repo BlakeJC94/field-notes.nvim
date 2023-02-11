@@ -32,7 +32,8 @@ function M.edit_in_split(file_path, vert, title)
     vert = vert or false
     title = title or ""
 
-    if vert then vim.cmd.vsplit() else vim.cmd.split() end
+    -- TODO remove vert
+    -- if vert then vim.cmd.vsplit() else vim.cmd.split() end
     vim.cmd.edit(file_path)
     vim.cmd.lcd(vim.fn.expand("%:p:h"))
 
