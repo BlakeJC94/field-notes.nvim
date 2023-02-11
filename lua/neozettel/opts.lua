@@ -14,6 +14,7 @@ local default_opts = {
         week = "%Y-W%W",
         month =  "%Y-M%m: %b",
     },
+    file_extension = 'md',
 }
 
 local opts
