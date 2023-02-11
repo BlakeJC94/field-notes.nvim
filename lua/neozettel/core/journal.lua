@@ -4,10 +4,21 @@ local opts = require("neozettel.opts")
 local utils = require("neozettel.utils")
 
 
-function M.journal(timescale, date_title_fmt, steps)
+function M.journal(keys)
+    local timescale = keys.fargs[1]
+    local steps = rawget(keys.fargs, 2) or 0
+
     -- TODO check that timescale is one of 'day', 'week', 'month'
-    local file_dir = rawget(opts.get().journal_dirs, timescale)
-    if not file_dir then print("FATAL: Invalid timescale"); return end
+    local timescale_dir = rawget(opts.get().journal_subdirs, timescale)
+    if not timescale_dir then print("FATAL: Invalid timescale"); return end
+
+    local date_title_fmt = rawget(opts.get().journal_date_title_formats, timescale)
+
+    local file_dir = table.concat({
+        opts.get().field_notes_path,
+        opts.get().journal_dir,
+        timescale_dir,
+    }, '/')
     utils.create_dir(file_dir)
 
     steps = steps or 0

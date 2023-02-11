@@ -1,17 +1,19 @@
 local M = {}
 
 local default_opts = {
-    note_dir = vim.fn.expand('~/journal'),
-    journal_dirs = {
-        day = vim.fn.expand('~/journal/daily'),
-        week = vim.fn.expand('~/journal/weekly'),
-        month = vim.fn.expand('~/journal/monthly'),
+    field_notes_path = vim.fn.expand('~/field-notes'),
+    notes_dir = 'notes',
+    journal_dir = 'journal',
+    journal_subdirs = {
+        day = 'daily',
+        week = 'weekly',
+        month = 'monthly',
     },
     journal_date_title_formats = {
         day = "%Y-%m-%d: %a",
         week = "%Y-W%W",
         month =  "%Y-M%m: %b",
-    }
+    },
 }
 
 local opts
@@ -27,7 +29,6 @@ local opts
 -- }
 ---@param user_opts table to override the default options
 function M.set(user_opts)
-    print("Calling setup")
     if not opts then
         opts = vim.tbl_deep_extend("force", {}, default_opts)
     end

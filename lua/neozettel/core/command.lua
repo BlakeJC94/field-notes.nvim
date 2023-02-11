@@ -2,7 +2,6 @@ local M = {}
 
 local note = require("neozettel.core.note").note
 local journal = require("neozettel.core.journal").journal
-local opts = require("neozettel.opts")
 
 M.ALLOWED_SUBCOMMANDS = {
     "note",
@@ -31,15 +30,9 @@ function M.neozettel(keys)
     end
 
     if subcommand == "note" then
-        local title = table.concat({unpack(fargs, 2)}, " ")  -- falls back to empty str
-        note(title)
+        note(keys, 2)
     else
-        local steps = rawget(fargs, 2) or 0
-        journal(
-            subcommand,
-            opts.get().journal_date_title_formats[subcommand],
-            steps
-        )
+        journal(keys)
     end
 end
 
