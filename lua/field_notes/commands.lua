@@ -3,7 +3,7 @@ local M = {}
 local function set_note_command()
     vim.api.nvim_create_user_command(
         "Note",
-        require("neozettel.core.note").note,
+        require("field_notes.core.note").note,
         { force = true, nargs = '*' }
     )
 end
@@ -11,7 +11,7 @@ end
 local function set_journal_command()
     vim.api.nvim_create_user_command(
         "Journal",
-        require("neozettel.core.journal").journal,
+        require("field_notes.core.journal").journal,
         { force = true, nargs = '*' }
     )
 end

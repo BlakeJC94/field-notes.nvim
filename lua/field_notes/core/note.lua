@@ -1,7 +1,7 @@
 local M = {}
 
-local opts = require("neozettel.opts")
-local utils = require("neozettel.utils")
+local opts = require("field_notes.opts")
+local utils = require("field_notes.utils")
 
 -- TODO load template instead of manually writing yaml header
 function M.note(keys)
