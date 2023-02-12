@@ -1,4 +1,4 @@
-# NeoZettel
+# field-notes.nvim
 A simple zettelkasten journal plugin for Neovim
 
 ## Setup
@@ -76,7 +76,7 @@ issues, feel free to open an issue or a PR.
 
 
 ### 0.2.0
-- [ ] Create `[[wiki_style]]` links
+- [ ] Create and jump pages with `[[wiki_style]]` links
 - [ ] User-configurable templates
 
 ### Planned features
