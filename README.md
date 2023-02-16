@@ -1,4 +1,4 @@
-# field-notes.nvim
+# field-notes.nvim 0.1.0
 A simple zettelkasten journal plugin for Neovim
 
 ## Setup
@@ -52,34 +52,24 @@ After calling `setup()`, the `:Note` and `:Journal` commands are added to Neovim
 `:Journal <timescale> [step]` usage:
 - `<timescale>` is one of `day`, `week`, `month`
 - Title of note is created from `journal_date_title_formats`
-- An integer `step` can be passed to step forwrad to future notes or back into past notes
+- An integer `step` can be passed to step forward to future notes or back into past notes
 
 NOTE: This plugin is primarily developed on Linux, and relies heavily on the `date` command. This is
 not assumed to work for Windows, and there may be some unusual quirks on Mac OS. If there are any
 issues, feel free to open an issue or a PR.
 
-## Development roadmap
-
-### 0.1.0
-- [X] Setup function with configurable `journal_dir`
-    - [X] Configurable daily/weekly/monthly locations
-    - [X] Configurable daily/weekly/monthly locations
-- [X] Testing framework using `plenary.nvim` for core utilities
-- [X] `Notes` command to jump to notes
-    - [X] If called with args, slugifies the input for filename and opens new buffer for note
-        - [X] Filenames are lowercased and spaces are replaces with underscores for filenames
-        - [X] New buffer opens with user input as `# Title`
-    - [X] If called without args, name of file inferred from directory/git branch
-- [X] `Journal <timescale> <steps>` command to jump to journal pages
-    - [X] Timescale arg to navigate journal subdirectories (`day`, `week`, `month`)
-    - [X] Steps arg to jump fowrad to future pages or back to past pages (integer, defaults to 0)
-
-
-### 0.2.0
-- [ ] Create and jump pages with `[[wiki_style]]` links
-- [ ] User-configurable templates
+## Features
+- [X] Configurable field-notes root location and directory names
+- [X] Configurable date formats for filenames
+- [X] Simple command `Note` to create new notes and jump to existing notes
+- [X] Simple command `Journal` to create new journal entries and traverse existing entries
 
 ### Planned features
+- [ ] Optional mappings to traverse up/down timescales, and left/right through past and future
+- [ ] Create and jump pages with `[[wiki_style]]` links
+- [ ] User-configurable templates
+- [ ] Shortcut commands
+- [ ] Autocomplete for commands
 - (Feel free to add suggestions via Github issues or a PR)
 
 
