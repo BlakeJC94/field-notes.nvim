@@ -68,7 +68,7 @@ issues, feel free to open an issue or a PR.
 - [ ] Optional mappings to traverse up/down timescales, and left/right through past and future
 - [ ] Create and jump pages with `[[wiki_style]]` links
 - [ ] User-configurable templates
-- [ ] Shortcut commands
+- [X] Shortcut commands
 - [ ] Autocomplete for commands
 - (Feel free to add suggestions via Github issues or a PR)
 

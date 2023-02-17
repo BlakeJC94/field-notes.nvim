@@ -1,19 +1,23 @@
 local M = {}
 
 local function set_note_command()
-    vim.api.nvim_create_user_command(
-        "Note",
-        require("field_notes.core.note").note,
-        { force = true, nargs = '*' }
-    )
+    for _, cmd in ipairs({"F", "FieldNote" ,"Note"}) do
+        vim.api.nvim_create_user_command(
+            cmd,
+            require("field_notes.core.note").note,
+            { force = true, nargs = '*' }
+        )
+    end
 end
 
 local function set_journal_command()
-    vim.api.nvim_create_user_command(
-        "Journal",
-        require("field_notes.core.journal").journal,
-        { force = true, nargs = '*' }
-    )
+    for _, cmd in ipairs({"Journal", "J"}) do
+        vim.api.nvim_create_user_command(
+            cmd,
+            require("field_notes.core.journal").journal,
+            { force = true, nargs = '*' }
+        )
+    end
 end
 
 function M.set()
