@@ -53,7 +53,7 @@ function M.get_note_title()
         -- In a git project,
         -- project name will be the project directory
         -- and the branch name is the current branch
-        project_path = M.quiet_run_shell('git rev-parse --show-toplevel --quiet')
+        project_path = vim.fn.finddir('.git/..', vim.fn.expand('%:p:h') .. ';')
         project_name = project_path:match('[^/]+$')
         branch_name = M.quiet_run_shell('git branch --show-current --quiet')
     else
