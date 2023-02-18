@@ -4,11 +4,9 @@ local opts = require("field_notes.opts")
 local utils = require("field_notes.utils")
 
 
-function M.journal(keys)
-    local timescale = rawget(keys.fargs, 1)
+function M.journal(timescale, steps)
     if not timescale then print("FATAL: Invalid timescale"); return end
-
-    local steps = rawget(keys.fargs, 2) or 0
+    steps = steps or 0
 
     local timescale_dir = opts.get().journal_subdirs[timescale]
     local date_title_fmt = opts.get().journal_date_title_formats[timescale]
