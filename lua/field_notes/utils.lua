@@ -38,6 +38,7 @@ function M.edit_note(file_path, title)
     if file_path_exists == 0 and title ~= "" then
         local lines = {"# " .. title, ""}
         vim.api.nvim_buf_set_lines(0, 0, 0, true, lines)
+        vim.cmd('setl nomodified')
     end
     vim.cmd.normal('G$')
 end
