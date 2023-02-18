@@ -10,7 +10,7 @@ function M.set()
         {
             events = "BufNewFile",
             pattern = field_notes_files,
-            callback = function() vim.cmd('setl buftype=nofile bufhidden=hide') end,
+            callback = function() vim.cmd('setl buftype=nofile bufhidden=delete') end,
         },
         -- Saving a new field note should then be treated as a proper vim buffer
         {
@@ -19,6 +19,15 @@ function M.set()
             callback = function()
                 if not vim.fn.filereadable(vim.fn.expand('%')) then
                     vim.cmd('setl buftype= bufhidden=')
+                end
+            end,
+        },
+        {
+            events = "BufLeave",
+            pattern = field_notes_files,
+            callback = function()
+                if not vim.fn.filereadable(vim.fn.expand('%')) then
+                    vim.cmd('bd!')
                 end
             end,
         },
