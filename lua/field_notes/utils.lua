@@ -103,7 +103,19 @@ function M.is_direction(input_str)
     input_str = input_str or ""
     local out = false
     for _, direction in ipairs({"left", "down", "up", "right"}) do
-        if input_str == direction or input_str:sub(1,1) == direction:sub(1,1) then
+        if input_str == direction then
+            out = true
+            break
+        end
+    end
+    return out
+end
+
+function M.is_timescale(input_str)
+    input_str = input_str or ""
+    local out = false
+    for _, timescale in ipairs({"day", "week", "month" }) do
+        if input_str == timescale then
             out = true
             break
         end
