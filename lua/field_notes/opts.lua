@@ -15,6 +15,12 @@ local default_opts = {
         month =  "%Y-M%m: %b",
     },
     file_extension = 'md',
+    journal_maps = {
+        left = nil,
+        down = nil,
+        up = nil,
+        right = nil,
+    },
 }
 
 local opts
