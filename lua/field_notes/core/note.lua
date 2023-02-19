@@ -19,14 +19,7 @@ function M.note(keys)
         opts.get().notes_dir,
     }, '/')
     utils.create_dir(notes_dir)
-
-    -- Flatten title for file_name matching/creation
-    local flat_title = utils.slugify(title)
-    note_path = notes_dir .. '/' .. flat_title .. "." .. opts.get().file_extension
-
-    -- Open in vertical split and move cursor to end of file
-    vim.cmd.lcd(vim.fn.expand(opts.get().field_notes_path))
-    utils.edit_note(note_path, title)
+    utils.edit_note(notes_dir, title)
 end
 
 return M

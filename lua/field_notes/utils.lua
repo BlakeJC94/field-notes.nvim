@@ -28,9 +28,15 @@ end
 
 -- TODO Test
 -- TODO Add template and keys to this instead of simply title
-function M.edit_note(file_path, title)
+function M.edit_note(file_dir, title)
     title = title or ""
 
+    local opts = require("field_notes.opts")
+
+    local filename = M.slugify(title)
+    local file_path = file_dir .. '/' .. filename .. '.' .. opts.get().file_extension
+
+    vim.cmd.lcd(vim.fn.expand(opts.get().field_notes_path))
     vim.cmd.edit(file_path)
 
     -- TODO if the file_path doesn't exist yet, write the title to buffer
