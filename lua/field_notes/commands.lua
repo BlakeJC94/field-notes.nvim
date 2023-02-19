@@ -1,5 +1,9 @@
 local M = {}
 
+local function _journal_command_complete(a, l, p)
+    return {"day", "week", "month", "left", "down", "up", "right"}
+end
+
 local function set_note_command()
     for _, cmd in ipairs({"F", "FieldNote" ,"Note"}) do
         vim.api.nvim_create_user_command(
@@ -28,7 +32,7 @@ local function set_journal_command()
                     require("field_notes.core.journal").nav(subcommand)
                 end
             end,
-            { force = true, nargs = '*' }
+            { force = true, nargs = '*', complete = _journal_command_complete }
         )
     end
 end
