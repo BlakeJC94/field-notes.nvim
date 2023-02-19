@@ -28,6 +28,13 @@ To install and configure (default shown) with `packer`:
             },
             -- File extension for all files
             file_extension = 'md',
+            -- Optional journal-buffer mappings for `:Journal left/down/up/right`
+            -- journal_maps = {
+            --     left = "<Leader><Left>",
+            --     down = "<Leader><Down>",
+            --     up = "<Leader><Up>",
+            --     right = "<Leader><Right>",
+            -- },
         })
     end,
 }
@@ -49,27 +56,33 @@ After calling `setup()`, the `:Note` and `:Journal` commands are added to Neovim
         - Otherwise inferred title will be `# <parent dir>: <current dir>`
 - Otherwise, title will be `# <user input to :Note command>`
 
-`:Journal <timescale> [step]` usage:
-- `<timescale>` is one of `day`, `week`, `month`
+`:Journal <subcommand>` usage:
 - Title of note is created from `journal_date_title_formats`
-- An integer `step` can be passed to step forward to future notes or back into past notes
+- `<subcommand>` is a timescale (`day`, `week`, or `month`), or a direction (`left`, `down`, `up`,
+  or `right`)
+    - Timescale subcommands open the current time journal entry on the requested timescale
+        - An optional integer step can be passed in `:Journal <timescale> [step]` to step forward to
+          future notes or back into past notes
+        - No step requested rested the step counter
+    - Direction subcommands only effective in journal buffers
+        - `left`/`right` to step back/forward between entries in currently viewed timescale
 
-NOTE: This plugin is primarily developed on Linux, and relies heavily on the `date` command. This is
-not assumed to work for Windows, and there may be some unusual quirks on Mac OS. If there are any
-issues, feel free to open an issue or a PR.
+NOTE: This plugin is primarily developed on Linux. This hasn't been tested on Windows or Mac OS, so
+there may be some unusual quirks on Mac OS. If there are any issues, feel free to open an issue or a
+PR.
 
 ## Features
 - [X] Configurable field-notes root location and directory names
 - [X] Configurable date formats for filenames
 - [X] Simple command `Note` to create new notes and jump to existing notes
 - [X] Simple command `Journal` to create new journal entries and traverse existing entries
+- [X] Shortcut commands (`:F` for `:Note` and `:J` for `:Journal`)
+- [X] Autocomplete for `:Journal` commands
+- [X] Optional mappings to traverse up/down timescales, and left/right through past and future
 
 ### Planned features
-- [ ] Optional mappings to traverse up/down timescales, and left/right through past and future
 - [ ] Create and jump pages with `[[wiki_style]]` links
 - [ ] User-configurable templates
-- [X] Shortcut commands
-- [ ] Autocomplete for commands
 - (Feel free to add suggestions via Github issues or a PR)
 
 

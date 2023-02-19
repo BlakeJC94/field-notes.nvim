@@ -28,9 +28,15 @@ end
 
 -- TODO Test
 -- TODO Add template and keys to this instead of simply title
-function M.edit_note(file_path, title)
+function M.edit_note(file_dir, title)
     title = title or ""
 
+    local opts = require("field_notes.opts")
+
+    local filename = M.slugify(title)
+    local file_path = file_dir .. '/' .. filename .. '.' .. opts.get().file_extension
+
+    vim.cmd.lcd(vim.fn.expand(opts.get().field_notes_path))
     vim.cmd.edit(file_path)
 
     -- TODO if the file_path doesn't exist yet, write the title to buffer
@@ -38,6 +44,7 @@ function M.edit_note(file_path, title)
     if file_path_exists == 0 and title ~= "" then
         local lines = {"# " .. title, ""}
         vim.api.nvim_buf_set_lines(0, 0, 0, true, lines)
+        vim.cmd('setl nomodified')
     end
     vim.cmd.normal('G$')
 end
@@ -99,6 +106,29 @@ function M.quiet_run_shell(cmd)
     return result
 end
 
+function M.is_direction(input_str)
+    input_str = input_str or ""
+    local out = false
+    for _, direction in ipairs({"left", "down", "up", "right"}) do
+        if input_str == direction then
+            out = true
+            break
+        end
+    end
+    return out
+end
+
+function M.is_timescale(input_str)
+    input_str = input_str or ""
+    local out = false
+    for _, timescale in ipairs({"day", "week", "month" }) do
+        if input_str == timescale then
+            out = true
+            break
+        end
+    end
+    return out
+end
 
 return M
 
