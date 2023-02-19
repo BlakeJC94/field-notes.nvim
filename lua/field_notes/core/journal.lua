@@ -32,9 +32,15 @@ function M.journal(timescale, steps)
         timescale_dir,
     }, '/')
     utils.create_dir(file_dir)
+M._csteps = nil
+local function set_csteps(val)
+    M._csteps = val
+end
+local function get_csteps()
+    if not M._csteps then set_csteps(0) end
+    return M._csteps
+end
 
-    local timedelta = tostring(steps) .. " " .. timescale .. "s"
-    local date_cmd = "date +'" .. date_title_fmt .. "' -d '" .. timedelta .."'"
 
     local title = utils.quiet_run_shell(date_cmd)
     local filename = utils.slugify(title)
