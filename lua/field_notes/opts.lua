@@ -21,6 +21,7 @@ local default_opts = {
         up = nil,
         right = nil,
     },
+    _vert = true,
 }
 
 local opts

@@ -36,7 +36,10 @@ function M.edit_note(file_dir, title)
     local filename = M.slugify(title)
     local file_path = file_dir .. '/' .. filename .. '.' .. opts.get().file_extension
 
-    vim.cmd.lcd(vim.fn.expand(opts.get().field_notes_path))
+    if not M.buffer_is_in_field_notes() then
+        if opts.get()._vert then vim.cmd.vsplit() else vim.cmd.split() end
+        vim.cmd.lcd(vim.fn.expand(opts.get().field_notes_path))
+    end
     vim.cmd.edit(file_path)
 
     -- TODO if the file_path doesn't exist yet, write the title to buffer
@@ -48,6 +51,20 @@ function M.edit_note(file_dir, title)
     end
     vim.cmd.normal('G$')
 end
+
+function M.buffer_is_in_field_notes(buf_idx)
+    buf_idx = buf_idx or 0
+    local opts = require("field_notes.opts")
+
+    local buf_path = vim.api.nvim_buf_get_name(buf_idx)
+    local field_notes_path = vim.fn.expand(opts.get().field_notes_path)
+    if field_notes_path:sub(-1) ~= "/" then field_notes_path = field_notes_path .. '/' end
+
+    local field_notes_path_in_buf_path = string.find(buf_path, field_notes_path, 1, true)
+    if field_notes_path_in_buf_path then return true end
+    return false
+end
+
 
 function M.buffer_is_empty(buf_idx)
     buf_idx = buf_idx or 0
