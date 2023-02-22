@@ -41,12 +41,21 @@ function M.edit_note(file_dir, title)
 
     -- TODO if the file_path doesn't exist yet, write the title to buffer
     local file_path_exists = vim.fn.filereadable(file_path)
-    if file_path_exists == 0 and title ~= "" then
+    if file_path_exists == 0 and title ~= "" and M.buffer_is_empty() then
         local lines = {"# " .. title, ""}
         vim.api.nvim_buf_set_lines(0, 0, 0, true, lines)
         vim.cmd('setl nomodified')
     end
     vim.cmd.normal('G$')
+end
+
+function M.buffer_is_empty(buf_idx)
+    buf_idx = buf_idx or 0
+    local status = false
+    if #vim.api.nvim_buf_get_lines(buf_idx, 1, -1, false) == 0 then
+        status = true
+    end
+    return status
 end
 
 -- Infers project name and branch name from current directory
