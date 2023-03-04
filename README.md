@@ -1,4 +1,4 @@
-# field-notes.nvim 0.1.2
+# field-notes.nvim 0.1.3
 A simple zettelkasten journal plugin for Neovim
 
 ## Setup
@@ -45,7 +45,7 @@ After calling `setup()`, the `:Note` and `:Journal` commands are added to Neovim
     - Filename is automatically slugified from title (lowercased and underscored)
     - Changes buffer Neovim directory to `field_notes_path`
 
-`:Note [title of note]` usage:
+`:FieldNote [title of note]` usage:
 - Opens a new buffer in the current window for the note
     - Filename is automatically slugified from title (lowercased and underscored)
     - Opened in `field_notes_path/notes_dir`
@@ -66,6 +66,16 @@ After calling `setup()`, the `:Note` and `:Journal` commands are added to Neovim
         - No step requested rested the step counter
     - Direction subcommands only effective in journal buffers
         - `left`/`right` to step back/forward between entries in currently viewed timescale
+
+`:LinkNote [note_filename]` usage:
+- Does nothing if not in a field note buffer
+- Completion enabled for `note_filename`
+- If called without args
+    - If cursor is on top of a `[[link_note]]`, check if `link_note.md` exists in the `notes_dir` and
+      jump to the note
+- If called with a `note_filename`,
+    - Check if the `note_filename.md` exists in `notes_dir`, insert `[[note_filename]]` at cursor
+      and jump to file
 
 NOTE: This plugin is primarily developed on Linux. This hasn't been tested on Windows or Mac OS, so
 there may be some unusual quirks on Mac OS. If there are any issues, feel free to open an issue or a
