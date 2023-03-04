@@ -142,7 +142,7 @@ function M.quiet_run_shell(cmd)
         cmd = cmd .. " " .. quiet_stderr
         result = io.popen(cmd):read()
     end
-    return result
+    return result or {}
 end
 
 function M.is_direction(input_str)
