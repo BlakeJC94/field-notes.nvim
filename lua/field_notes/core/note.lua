@@ -5,7 +5,7 @@ local utils = require("field_notes.utils")
 
 -- TODO load template instead of manually writing yaml header
 function M.note(keys)
-    local note_path, title
+    local title
 
     title = table.concat(keys.fargs, " ") or ""
     if #title == 0 then title = utils.get_note_title() end
@@ -18,6 +18,7 @@ function M.note(keys)
         opts.get().field_notes_path,
         opts.get().notes_dir,
     }, '/')
+
     utils.create_dir(notes_dir)
     utils.edit_note(notes_dir, title)
 end

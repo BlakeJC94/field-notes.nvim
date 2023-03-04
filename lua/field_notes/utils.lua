@@ -48,8 +48,8 @@ function M.edit_note(file_dir, title)
         local lines = {"# " .. title, ""}
         vim.api.nvim_buf_set_lines(0, 0, 0, true, lines)
         vim.cmd('setl nomodified')
+        vim.cmd.normal('G$')
     end
-    vim.cmd.normal('G$')
 end
 
 function M.buffer_is_in_field_notes(buf_idx)
