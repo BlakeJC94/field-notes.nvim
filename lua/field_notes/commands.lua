@@ -5,7 +5,7 @@ local function _journal_command_complete(a, l, p)
 end
 
 local function set_note_command()
-    for _, cmd in ipairs({"F", "FieldNote" ,"Note"}) do
+    for _, cmd in ipairs({"F", "FieldNote", "Note"}) do
         vim.api.nvim_create_user_command(
             cmd,
             function(keys)
@@ -37,9 +37,22 @@ local function set_journal_command()
     end
 end
 
+local function set_link_command()
+    for _, cmd in ipairs({"L", "LinkNote"}) do
+        vim.api.nvim_create_user_command(
+            cmd,
+            function(keys)
+                require("field_notes.core.link").link(keys)
+            end,
+            { force = true, nargs = '?', complete = require("field_notes.core.link").complete}
+        )
+    end
+end
+
 function M.set()
     set_note_command()
     set_journal_command()
+    set_link_command()
 end
 
 return M
