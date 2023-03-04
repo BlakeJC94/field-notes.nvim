@@ -37,13 +37,7 @@ function M.edit_note(file_dir, title)
     local file_path = file_dir .. '/' .. filename .. '.' .. opts.get().file_extension
 
     if M.buffer_is_in_field_notes() then
-        -- Put a link at the cursor position
-        local link_string = table.concat({"[[", filename, "]]"})
-        local cursor = vim.api.nvim_win_get_cursor(0)
-        local row = cursor[1] - 1
-        local col = cursor[2]
-        vim.api.nvim_buf_set_text(0, row, col, row, col, {link_string})
-        vim.cmd.write()
+        M.add_field_note_link_at_cursor(filename)
     else
         if not M.buffer_is_empty() then
             if opts.get()._vert then vim.cmd.vsplit() else vim.cmd.split() end
@@ -60,6 +54,15 @@ function M.edit_note(file_dir, title)
         vim.cmd('setl nomodified')
         vim.cmd.normal('G$')
     end
+end
+
+function M.add_field_note_link_at_cursor(filename)
+    local link_string = table.concat({"[[", filename, "]]"})
+    local cursor = vim.api.nvim_win_get_cursor(0)
+    local row = cursor[1] - 1
+    local col = cursor[2]
+    vim.api.nvim_buf_set_text(0, row, col, row, col, {link_string})
+    vim.cmd.write()
 end
 
 function M.buffer_is_in_field_notes(buf_idx)

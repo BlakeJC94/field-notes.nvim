@@ -28,12 +28,7 @@ function M.link(keys)
     if file_path_exists == 0 then return end
 
     if given_filename then
-        local link_string = table.concat({"[[", link_filename, "]]"})
-        local cursor = vim.api.nvim_win_get_cursor(0)
-        local row = cursor[1] - 1
-        local col = cursor[2]
-        vim.api.nvim_buf_set_text(0, row, col, row, col, {link_string})
-        vim.cmd.write()
+        M.add_field_note_link_at_cursor(link_filename)
     end
     vim.cmd.edit(file_path)
 end
