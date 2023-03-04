@@ -36,8 +36,18 @@ function M.edit_note(file_dir, title)
     local filename = M.slugify(title)
     local file_path = file_dir .. '/' .. filename .. '.' .. opts.get().file_extension
 
-    if not M.buffer_is_in_field_notes() and not M.buffer_is_empty() then
-        if opts.get()._vert then vim.cmd.vsplit() else vim.cmd.split() end
+    if M.buffer_is_in_field_notes() then
+        -- Put a link at the cursor position
+        local link_string = table.concat({"[[", filename, "]]"})
+        local cursor = vim.api.nvim_win_get_cursor(0)
+        local row = cursor[1] - 1
+        local col = cursor[2]
+        vim.api.nvim_buf_set_text(0, row, col, row, col, {link_string})
+        vim.cmd.write()
+    else
+        if not M.buffer_is_empty() then
+            if opts.get()._vert then vim.cmd.vsplit() else vim.cmd.split() end
+        end
         vim.cmd.lcd(vim.fn.expand(opts.get().field_notes_path))
     end
     vim.cmd.edit(file_path)
