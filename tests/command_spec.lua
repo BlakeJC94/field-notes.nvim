@@ -2,7 +2,7 @@ local mock = require('luassert.mock')
 local stub = require('luassert.stub')
 
 describe("note command", function()
-    require("neozettel").setup()
+    require("field_notes").setup()
 
     it("opens a file when called with args in git dir", function()
         local utils = mock(require("neozettel.utils"), true)

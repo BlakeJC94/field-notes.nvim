@@ -1,7 +1,7 @@
 describe(
     "slugify",
     function()
-        local slugify = require("neozettel.utils").slugify
+        local slugify = require("field_notes.utils").slugify
 
         it(
             "should lowercase words",
@@ -56,6 +56,14 @@ describe(
                 assert.equals("foo_bar", slugify("foo=bar"))
                 assert.equals("foo_bar", slugify("foo.bar"))
                 assert.equals("foo_bar", slugify("foo,bar"))
+            end
+        )
+        it(
+            "replaces quotes with underscores",
+            function()
+                assert.equals("foo_bar_baz", slugify("foo `bar` baz"))
+                assert.equals("foo_bar_baz", slugify('foo "bar" baz'))
+                assert.equals("foo_bar_baz", slugify("foo 'bar' baz"))
             end
         )
     end
