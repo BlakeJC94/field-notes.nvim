@@ -38,4 +38,18 @@ function M.link(keys)
     vim.cmd.edit(file_path)
 end
 
+function M.complete()
+    local notes_dir = table.concat({
+        opts.get().field_notes_path,
+        opts.get().notes_dir,
+    }, '/')
+
+    local notes = {}
+    for file in vim.fs.dir(notes_dir) do
+        notes[#notes+1] = string.gsub(file, "%.%w*$", "")
+    end
+
+    return notes
+end
+
 return M
