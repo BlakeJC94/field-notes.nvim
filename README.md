@@ -1,4 +1,4 @@
-# field-notes.nvim 0.1.3
+# field-notes.nvim 0.1.4
 A simple zettelkasten journal plugin for Neovim
 
 ## Setup
