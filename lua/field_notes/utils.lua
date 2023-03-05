@@ -36,9 +36,7 @@ function M.edit_note(file_dir, title)
     local filename = M.slugify(title)
     local file_path = file_dir .. '/' .. filename .. '.' .. opts.get().file_extension
 
-    if M.buffer_is_in_field_notes() then
-        M.add_field_note_link_at_cursor(filename)
-    else
+    if not M.buffer_is_in_field_notes() then
         if not M.buffer_is_empty() then
             if opts.get()._vert then vim.cmd.vsplit() else vim.cmd.split() end
         end
