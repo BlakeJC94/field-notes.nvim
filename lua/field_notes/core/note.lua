@@ -20,7 +20,7 @@ function M.note(keys)
     }, '/')
 
     utils.create_dir(notes_dir)
-    if M.buffer_is_in_field_notes() then
+    if utils.buffer_is_in_field_notes() then
         utils.add_field_note_link_at_cursor(utils.slugify(title))
     end
     utils.edit_note(notes_dir, title)
