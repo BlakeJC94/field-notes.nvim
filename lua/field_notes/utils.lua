@@ -54,6 +54,37 @@ function M.edit_note(file_dir, title)
     end
 end
 
+function M.get_journal_title(timescale, timestamp)
+    timestamp = timestamp or os.time()
+    local opts = require("field_notes.opts")
+    local date_title_fmt = opts.get().journal_date_title_formats[timescale]
+    return os.date(date_title_fmt, timestamp)
+end
+
+function M.get_journal_dir(timescale)
+    local opts = require("field_notes.opts")
+    if not timescale then
+        return table.concat({
+            opts.get().field_notes_path,
+            opts.get().journal_dir,
+        }, '/')
+    end
+    local timescale_dir = opts.get().journal_subdirs[timescale]
+    return table.concat({
+        opts.get().field_notes_path,
+        opts.get().journal_dir,
+        timescale_dir,
+    }, '/')
+end
+
+function M.get_notes_dir()
+    local opts = require("field_notes.opts")
+    return table.concat({
+        opts.get().field_notes_path,
+        opts.get().notes_dir,
+    }, '/')
+end
+
 function M.add_field_note_link_at_cursor(filename)
     local link_string = table.concat({"[[", filename, "]]"})
     local cursor = vim.api.nvim_win_get_cursor(0)
