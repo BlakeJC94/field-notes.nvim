@@ -95,11 +95,23 @@ function M.add_field_note_link_at_cursor(filename)
 end
 
 function M.buffer_is_in_field_notes(buf_idx)
+function M.buffer_is_in_field_notes(buf_idx, subdir)
     buf_idx = buf_idx or 0
     local opts = require("field_notes.opts")
 
     local buf_path = vim.api.nvim_buf_get_name(buf_idx)
+
     local field_notes_path = vim.fn.expand(opts.get().field_notes_path)
+    if subdir then
+        if subdir == "notes" then
+            field_notes_path = M.get_notes_dir()
+        elseif subdir == "journal" then
+            field_notes_path = M.get_journal_dir()
+        elseif M.is_timescale(subdir) then
+            field_notes_path = M.get_journal_dir(subdir)
+        end
+    end
+
     if field_notes_path:sub(-1) ~= "/" then field_notes_path = field_notes_path .. '/' end
 
     local field_notes_path_in_buf_path = string.find(buf_path, field_notes_path, 1, true)
