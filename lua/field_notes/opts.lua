@@ -22,7 +22,7 @@ local default_opts = {
         right = nil,
     },
     auto_add_links_to_journal = {
-        day = true,
+        day = false,
         week = false,
         month = false,
     },
