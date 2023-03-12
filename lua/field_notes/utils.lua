@@ -94,7 +94,70 @@ function M.add_field_note_link_at_cursor(filename)
     vim.cmd.write()
 end
 
-function M.buffer_is_in_field_notes(buf_idx)
+function M.add_field_note_link_at_current_journal(filename, timescale)
+    local opts = require("field_notes.opts")
+
+    -- Open current journal at timescale
+    local title = M.get_journal_title(timescale, nil)
+    local file_dir = M.get_journal_dir(timescale)
+    local file_path = file_dir .. '/' .. M.slugify(title) .. '.' .. opts.get().file_extension
+    if vim.fn.filereadable(file_path) == 0 then
+        -- Exit if file doesn't exist
+        return
+    end
+
+    -- Load the journal file
+    local _bufnr_already_exists = vim.fn.bufexists(file_path)
+    local bufnr = vim.fn.bufadd(file_path)
+    vim.fn.bufload(file_path)
+    -- Get list of lines
+    local content = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+
+    -- Search for anchor
+    local anchor = opts.get().journal_link_anchor
+    local last_link_idx
+    local link_match
+    local title_idx = 0
+    for line_idx, line in ipairs(content) do
+        if title_idx == 0 and string.match(line, "^#%s") then
+            title_idx = line_idx
+        elseif not last_link_idx and string.match(line, "^" .. anchor) then
+            last_link_idx = line_idx
+        elseif last_link_idx then
+            link_match = string.match(line, "%[%[(%S+)%]%]")
+            if link_match then
+                if link_match == filename then
+                    -- Exit if item is already in list
+                    if _bufnr_already_exists == 0 then
+                        vim.cmd.bwipeout(file_path)
+                    end
+                    return
+                end
+                last_link_idx = line_idx
+            else
+                break
+            end
+        end
+    end
+
+    -- If anchor is not present, insert new anchor 2 lines below title
+    if not last_link_idx then
+        vim.api.nvim_buf_set_lines(bufnr, title_idx, title_idx, false, {"", anchor})
+        last_link_idx = title_idx + 2
+    end
+
+    -- Get link str and insert line at end of list
+    local link_string = table.concat({"[[", filename, "]]"})
+    vim.api.nvim_buf_set_lines(bufnr, last_link_idx, last_link_idx, false, {"* " .. link_string})
+
+    -- Close buffer
+    vim.api.nvim_buf_call(bufnr, function() vim.cmd("silent write") end)
+    if _bufnr_already_exists == 0 then
+        vim.cmd.bwipeout(file_path)
+    end
+
+end
+
 function M.buffer_is_in_field_notes(buf_idx, subdir)
     buf_idx = buf_idx or 0
     local opts = require("field_notes.opts")
