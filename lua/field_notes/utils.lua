@@ -54,6 +54,37 @@ function M.edit_note(file_dir, title)
     end
 end
 
+function M.get_journal_title(timescale, timestamp)
+    timestamp = timestamp or os.time()
+    local opts = require("field_notes.opts")
+    local date_title_fmt = opts.get().journal_date_title_formats[timescale]
+    return os.date(date_title_fmt, timestamp)
+end
+
+function M.get_journal_dir(timescale)
+    local opts = require("field_notes.opts")
+    if not timescale then
+        return table.concat({
+            opts.get().field_notes_path,
+            opts.get().journal_dir,
+        }, '/')
+    end
+    local timescale_dir = opts.get().journal_subdirs[timescale]
+    return table.concat({
+        opts.get().field_notes_path,
+        opts.get().journal_dir,
+        timescale_dir,
+    }, '/')
+end
+
+function M.get_notes_dir()
+    local opts = require("field_notes.opts")
+    return table.concat({
+        opts.get().field_notes_path,
+        opts.get().notes_dir,
+    }, '/')
+end
+
 function M.add_field_note_link_at_cursor(filename)
     local link_string = table.concat({"[[", filename, "]]"})
     local cursor = vim.api.nvim_win_get_cursor(0)
@@ -63,12 +94,87 @@ function M.add_field_note_link_at_cursor(filename)
     vim.cmd.write()
 end
 
-function M.buffer_is_in_field_notes(buf_idx)
+function M.add_field_note_link_at_current_journal(filename, timescale)
+    local opts = require("field_notes.opts")
+
+    -- Open current journal at timescale
+    local title = M.get_journal_title(timescale, nil)
+    local file_dir = M.get_journal_dir(timescale)
+    local file_path = file_dir .. '/' .. M.slugify(title) .. '.' .. opts.get().file_extension
+    if vim.fn.filereadable(file_path) == 0 then
+        -- Exit if file doesn't exist
+        return
+    end
+
+    -- Load the journal file
+    local _bufnr_already_exists = vim.fn.bufexists(file_path)
+    local bufnr = vim.fn.bufadd(file_path)
+    vim.fn.bufload(file_path)
+    -- Get list of lines
+    local content = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+
+    -- Search for anchor
+    local anchor = opts.get().journal_link_anchor
+    local last_link_idx
+    local link_match
+    local title_idx = 0
+    for line_idx, line in ipairs(content) do
+        if title_idx == 0 and string.match(line, "^#%s") then
+            title_idx = line_idx
+        elseif not last_link_idx and string.match(line, "^" .. anchor) then
+            last_link_idx = line_idx
+        elseif last_link_idx then
+            link_match = string.match(line, "%[%[(%S+)%]%]")
+            if link_match then
+                if link_match == filename then
+                    -- Exit if item is already in list
+                    if _bufnr_already_exists == 0 then
+                        vim.cmd.bwipeout(file_path)
+                    end
+                    return
+                end
+                last_link_idx = line_idx
+            else
+                break
+            end
+        end
+    end
+
+    -- If anchor is not present, insert new anchor 2 lines below title
+    if not last_link_idx then
+        vim.api.nvim_buf_set_lines(bufnr, title_idx, title_idx, false, {"", anchor})
+        last_link_idx = title_idx + 2
+    end
+
+    -- Get link str and insert line at end of list
+    local link_string = table.concat({"[[", filename, "]]"})
+    vim.api.nvim_buf_set_lines(bufnr, last_link_idx, last_link_idx, false, {"* " .. link_string})
+
+    -- Close buffer
+    vim.api.nvim_buf_call(bufnr, function() vim.cmd("silent write") end)
+    if _bufnr_already_exists == 0 then
+        vim.cmd.bwipeout(file_path)
+    end
+
+end
+
+function M.buffer_is_in_field_notes(buf_idx, subdir)
     buf_idx = buf_idx or 0
     local opts = require("field_notes.opts")
 
     local buf_path = vim.api.nvim_buf_get_name(buf_idx)
+
     local field_notes_path = vim.fn.expand(opts.get().field_notes_path)
+    if subdir then
+        if subdir == "notes" then
+            field_notes_path = M.get_notes_dir()
+        elseif subdir == "journal" then
+            field_notes_path = M.get_journal_dir()
+        elseif M.is_timescale(subdir) then
+            field_notes_path = M.get_journal_dir(subdir)
+        end
+    end
+
     if field_notes_path:sub(-1) ~= "/" then field_notes_path = field_notes_path .. '/' end
 
     local field_notes_path_in_buf_path = string.find(buf_path, field_notes_path, 1, true)

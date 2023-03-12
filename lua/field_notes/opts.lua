@@ -21,6 +21,12 @@ local default_opts = {
         up = nil,
         right = nil,
     },
+    auto_add_links_to_journal = {
+        day = false,
+        week = false,
+        month = false,
+    },
+    journal_link_anchor = "## Field notes",
     _vert = true,
 }
 
