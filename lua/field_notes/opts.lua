@@ -45,22 +45,22 @@ end
 
 local function date_format_is_valid(fmt_string, timescale)
     -- if all is present return true
-    if string_contains_date_chars(fmt_string, {'c', 'D', 'F', 's', 'x'}) then
+    if string_contains_date_chars(fmt_string, {'c', 's', 'x'}) then
         return true
     end
     -- if not year is present return false
-    if not string_contains_date_chars(fmt_string, {'G', 'g', 'y', 'Y'}) then
+    if not string_contains_date_chars(fmt_string, {'y', 'Y'}) then
         return false
     end
 
-    local month_is_present = string_contains_date_chars(fmt_string, {'b', 'B', 'h', 'm', 'd', 'e', 'j', 'U', 'V', 'W'})
-    local week_is_present = string_contains_date_chars(fmt_string, {'U', 'V', 'W', 'd', 'e', 'j'})
-    local day_is_present = string_contains_date_chars(fmt_string, {'a', 'A', 'd', 'e', 'j', 'u', 'w'})
+    local month_is_present = string_contains_date_chars(fmt_string, {'b', 'B', 'm', 'd', 'U', 'W'})
+    local week_is_present = string_contains_date_chars(fmt_string, {'U', 'W', 'j'})
+    local day_is_present = string_contains_date_chars(fmt_string, {'a', 'A', 'd', 'j', 'w'})
 
     local is_valid = false
     if timescale == "month" and month_is_present then
         is_valid = true
-    elseif timescale == "week" and week_is_present then
+    elseif timescale == "week" and week_is_present or (day_is_present and month_is_present) then
         is_valid = true
     elseif timescale == "day" and day_is_present then
         is_valid = true
