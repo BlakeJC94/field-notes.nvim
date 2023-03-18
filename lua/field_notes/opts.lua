@@ -43,9 +43,10 @@ local function string_contains_date_chars(fmt_string, char_list)
     return is_present
 end
 
+-- TODO Use default fmt string if this check fails
 local function date_format_is_valid(fmt_string, timescale)
     -- if all is present return true
-    if string_contains_date_chars(fmt_string, {'c', 's', 'x'}) then
+    if string_contains_date_chars(fmt_string, {'s', 'x'}) then
         return true
     end
     -- if not year is present return false
