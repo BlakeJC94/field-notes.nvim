@@ -4,15 +4,12 @@ local opts = require("field_notes.opts")
 local utils = require("field_notes.utils")
 
 function M.cur_buf_journal_timescale()
+    if not utils.buffer_is_in_field_notes(0, 'journal') then return nil end
+
     local current_path = vim.api.nvim_buf_get_name(0)
-
-    local journal_path = vim.fn.expand(opts.get().field_notes_path .. '/' .. opts.get().journal_dir)
-    local journal_path_in_cur_path = string.find(current_path, journal_path, 1, true)
-    if not journal_path_in_cur_path then return nil end
-
     for _, timescale in ipairs({'day', 'week', 'month'}) do
-        local timescale_path = journal_path .. '/' .. opts.get().journal_subdirs[timescale]
-        local timescale_path_in_cur_path =string.find(current_path, timescale_path, 1, true)
+        local timescale_path = utils.get_journal_dir(timescale)
+        local timescale_path_in_cur_path = string.find(current_path, timescale_path, 1, true)
         if timescale_path_in_cur_path then return timescale end
     end
 
