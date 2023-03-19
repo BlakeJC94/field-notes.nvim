@@ -16,6 +16,27 @@ function M.cur_buf_journal_timescale()
     return nil
 end
 
+
+-- FIXME
+-- function M.cur_buf_journal_timestamp()
+--     local timescale = M.cur_buf_journal_timescale()
+--     if not timescale then return nil end
+
+--     -- Get date format
+--     local date_format = opts.get().journal_date_title_formats[timescale]
+--     -- Get filename -- FIXME get title of note instead
+--     -- local current_filename = string.match(vim.api.nvim_buf_get_name(0), '/([^/]+)%..*$')
+--     local current_filepath = vim.api.nvim_buf_get_name(0)
+--     local title_of_note = utils.read_title_of_note_from_filepath(current_filepath)
+--     -- Get timestamp
+--     print("TRACE: date_format", date_format)
+--     print("TRACE: title_of_note", title_of_note)
+--     local timestamp = vim.fn.strptime(date_format, title_of_note)
+--     print("TRACE: from file timestamp", timestamp)
+--     return timestamp
+-- end
+
+
 local function edit_journal(timescale, timestamp)
     local title = utils.get_journal_title(timescale, timestamp)
     local file_dir = utils.get_journal_dir(timescale)
