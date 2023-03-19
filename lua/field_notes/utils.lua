@@ -273,6 +273,83 @@ function M.is_timescale(input_str)
     return out
 end
 
+local function parse_date_format_char(char, date_format, input_str)
+    local output, search_pattern
+    if string.match(date_format, '%%' .. char) then
+        search_pattern, _ = string.gsub(date_format, '%%' .. char, '(%%d+)')
+        search_pattern, _ = string.gsub(search_pattern, '%%%w+', '.+')
+        output = string.match(input_str, search_pattern)
+    end
+    return tonumber(output)
+end
+
+local function day_of_first_wday(wday, year)
+    for i=1,7 do
+        if os.date("*t", os.time({year=year, day=i})).wday == wday then
+            return i
+        end
+    end
+end
+
+
+function M.get_datetbl_from_str(date_format, input_str)
+    local _
+    local search_pattern
+
+    -- parse s if present
+    local timestamp = parse_date_format_char('s', date_format, input_str)
+    if timestamp then
+        return os.date('*t', timestamp)
+    end
+
+    -- replace x with d/m/y fmt
+    if string.match(date_format, '%%x') then
+        date_format, _ = string.gsub(date_format, "%%x", "%%d/%%m/%%y")
+    end
+
+    -- parse year
+    local year = parse_date_format_char('Y', date_format, input_str)
+    if not year then
+        year = parse_date_format_char('y', date_format, input_str)
+        if year < 70 then
+            year = 2000 + year
+        else
+            year = 1900 + year
+        end
+    end
+    if not year then error("NO YEAR FOUND") end
+
+    -- parse month
+    local month = parse_date_format_char('m', date_format, input_str) or 1
+
+    -- parse day
+    local day = parse_date_format_char('d', date_format, input_str)
+    if day then
+        return {year=year, month=month, day=day}
+    end
+
+    -- parse day of year
+    local dayofyear = parse_date_format_char('j', date_format, input_str)
+    if dayofyear then
+        return {year=year, month=1, day=dayofyear}
+    end
+
+    -- parse day of week
+    local dayofweek = parse_date_format_char('w', date_format, input_str) or 0
+
+    -- parse week number
+    local weeknum_sun = parse_date_format_char('U', date_format, input_str)
+    local weeknum_mon = parse_date_format_char('W', date_format, input_str)
+    if weeknum_sun then
+        local day_of_first_sun = day_of_first_wday(1, year)
+        day = day_of_first_sun + 7 * (weeknum_sun - 1) + (dayofweek)
+    elseif weeknum_mon then
+        local day_of_first_mon = day_of_first_wday(2, year)
+        day = day_of_first_mon + 7 * (weeknum_mon - 1) + (dayofweek - 1)
+    end
+    return {year = year, month=1, day=day or 1}
+end
+
 return M
 
 -- TODO look into vim.uri_from_bufnr
