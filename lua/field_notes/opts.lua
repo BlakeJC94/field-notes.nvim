@@ -54,9 +54,9 @@ local function date_format_is_valid(fmt_string, timescale)
         return false
     end
 
-    local month_is_present = string_contains_date_chars(fmt_string, {'b', 'B', 'm', 'd', 'U', 'W'})
+    local month_is_present = string_contains_date_chars(fmt_string, {'m', 'd', 'U', 'W'})
     local week_is_present = string_contains_date_chars(fmt_string, {'U', 'W', 'j'})
-    local day_is_present = string_contains_date_chars(fmt_string, {'a', 'A', 'd', 'j', 'w'})
+    local day_is_present = string_contains_date_chars(fmt_string, {'d', 'j', 'w'})
 
     local is_valid = false
     if timescale == "month" and month_is_present then
