@@ -274,10 +274,9 @@ function M.is_timescale(input_str)
 end
 
 local function parse_date_format_char(char, date_format, input_str)
-    local output, search_pattern
+    local output, search_pattern, _
     if string.match(date_format, '%%' .. char) then
         search_pattern, _ = string.gsub(date_format, '%%' .. char, '(%%d+)')
-        search_pattern, _ = string.gsub(search_pattern, '%%%w+', '.+')
         output = string.match(input_str, search_pattern)
     end
     return tonumber(output)
