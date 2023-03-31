@@ -1,7 +1,10 @@
 local M = {}
 
-function M.slugify(input_string)
-    local output_string = string.lower(input_string)
+function M.slugify(input_string, skip_lowercase)
+    local output_string = input_string
+    if not skip_lowercase then
+        output_string = string.lower(input_string)
+    end
     output_string = string.gsub(output_string, '[ %[%]()%{%}%\\%/-.,=%\'%\":;><`]+', '_')
     output_string = string.gsub(output_string, '^[_]+', '')
     output_string = string.gsub(output_string, '[_]+$', '')

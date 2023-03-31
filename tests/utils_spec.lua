@@ -4,11 +4,19 @@ describe(
         local slugify = require("field_notes.utils").slugify
 
         it(
-            "should lowercase words",
+            "should lowercase words by default",
             function()
                 assert.equals("foo", slugify("Foo"))
                 assert.equals("bar", slugify("bAr"))
                 assert.equals("baz", slugify("BAZ"))
+            end
+        )
+        it(
+            "should not lowercase words if specified",
+            function()
+                assert.equals("Foo", slugify("Foo", true))
+                assert.equals("bAr", slugify("bAr", true))
+                assert.equals("BAZ", slugify("BAZ", true))
             end
         )
         it(
