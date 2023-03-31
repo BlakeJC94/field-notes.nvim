@@ -294,10 +294,12 @@ end
 
 function M.get_datetbl_from_str(date_format, input_str)
     local _
-    local search_pattern
 
     -- parse s if present
+    print(vim.inspect(date_format))
+    print(vim.inspect(input_str))
     local timestamp = parse_date_format_char('s', date_format, input_str)
+    print(vim.inspect(timestamp))
     if timestamp then
         return os.date('*t', timestamp)
     end

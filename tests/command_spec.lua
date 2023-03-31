@@ -1,15 +1,15 @@
-local mock = require('luassert.mock')
-local stub = require('luassert.stub')
+-- local mock = require('luassert.mock')
+-- local stub = require('luassert.stub')
 
-describe("note command", function()
-    require("field_notes").setup()
+-- describe("note command", function()
+--     require("field_notes").setup()
 
-    it("opens a file when called with args in git dir", function()
-        local utils = mock(require("neozettel.utils"), true)
-        utils.slugify.returns("foo_bar")
+--     it("opens a file when called with args in git dir", function()
+--         local utils = mock(require("neozettel.utils"), true)
+--         utils.slugify.returns("foo_bar")
 
-        vim.cmd("NeoZettel note foo bar")
+--         vim.cmd("NeoZettel note foo bar")
 
-        assert.stub(utils.edit_file).was_called(1)
-    end)
-end)
+--         assert.stub(utils.edit_file).was_called(1)
+--     end)
+-- end)

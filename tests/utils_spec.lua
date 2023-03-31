@@ -69,6 +69,24 @@ describe(
     end
 )
 
+describe(
+    "get_datetbl_from_str",
+    function()
+        local get_datetbl_from_str = require("field_notes.utils").get_datetbl_from_str
+        it(
+            "should read timestamps",
+            function()
+                local date_format = "file_%s"
+                local input_str = "file_1234567891"
+
+                local expected = {day=14, month=2, year=2009}
+
+                assert.equals(expected, get_datetbl_from_str(date_format, input_str))
+            end
+        )
+    end
+)
+
 -- describe(
 --     "create_dir",
 --     function()
