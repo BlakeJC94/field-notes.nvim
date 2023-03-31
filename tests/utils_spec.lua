@@ -73,15 +73,21 @@ describe(
     "get_datetbl_from_str",
     function()
         local get_datetbl_from_str = require("field_notes.utils").get_datetbl_from_str
+        local function assert_datetbl_dates_are_equal(tbl1, tbl2)
+            for _, val in ipairs({"day", "month", "year"}) do
+                assert.equals(tbl1[val], tbl2[val])
+            end
+        end
+
         it(
             "should read timestamps",
             function()
                 local date_format = "file_%s"
                 local input_str = "file_1234567891"
-
-                local expected = {day=14, month=2, year=2009}
-
-                assert.equals(expected, get_datetbl_from_str(date_format, input_str))
+                assert_datetbl_dates_are_equal(
+                    {day=14, month=2, year=2009},
+                    get_datetbl_from_str(date_format, input_str)
+                )
             end
         )
     end
