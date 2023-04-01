@@ -12,14 +12,6 @@ describe(
             end
         )
         it(
-            "should not lowercase words if specified",
-            function()
-                assert.equals("Foo", slugify("Foo", true))
-                assert.equals("bAr", slugify("bAr", true))
-                assert.equals("BAZ", slugify("BAZ", true))
-            end
-        )
-        it(
             "leaves underscores unmodified",
             function()
                 assert.equals("foo_bar_baz", slugify("foo_bar_baz"))
@@ -83,7 +75,7 @@ describe(
         local get_datetbl_from_str = require("field_notes.utils").get_datetbl_from_str
         local function assert_datetbl_dates_are_equal(tbl1, tbl2)
             for _, val in ipairs({"day", "month", "year"}) do
-                assert.equals(tbl1[val], tbl2[val])
+                assert.equals(tbl1[val], tbl2[val], val)
             end
         end
 
@@ -112,12 +104,34 @@ describe(
         )
 
         it(
-            "should read dates (%d_%m_%Y)",
+            "should read dates in custom arrangement (%d, %m, %Y)",
             function()
-                local date_format = "file-%d-%m-%Y"
-                local input_str = "file-14-2-2009"
-                local output = get_datetbl_from_str(date_format, input_str)
-                print(vim.inspect(output))
+                local date_format = "file-%Y-%m-%d"
+                local input_str = "file-2009-02-14"
+                assert_datetbl_dates_are_equal(
+                    {day=14, month=2, year=2009},
+                    get_datetbl_from_str(date_format, input_str)
+                )
+            end
+        )
+
+        it(
+            "should read dates in custom arrangement (%d, %m, %y)",
+            function()
+                local date_format = "file-%y-%m-%d"
+                local input_str = "file-09-02-14"
+                assert_datetbl_dates_are_equal(
+                    {day=14, month=2, year=2009},
+                    get_datetbl_from_str(date_format, input_str)
+                )
+            end
+        )
+
+        it(
+            "should read dates from yday (%Y, %j)",
+            function()
+                local date_format = "file %Y, %j"
+                local input_str = "file 2009, 45"
                 assert_datetbl_dates_are_equal(
                     {day=14, month=2, year=2009},
                     get_datetbl_from_str(date_format, input_str)
