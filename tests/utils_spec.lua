@@ -162,6 +162,7 @@ describe(
                 )
             end
         )
+
         it(
             "should read dates from sun weeknum (%Y, %U)",
             function()
@@ -169,6 +170,30 @@ describe(
                 local input_str = "file 2009 [05]"
                 assert_datetbl_dates_are_equal(
                     {day=8, month=2, year=2009},
+                    get_datetbl_from_str(date_format, input_str)
+                )
+            end
+        )
+
+        it(
+            "should read dates from mon weeknum and wday (%Y, %W, %w)",
+            function()
+                local date_format = "file %Y: %W %w"
+                local input_str = "file 2009: 06 0"
+                assert_datetbl_dates_are_equal(
+                    {day=15, month=2, year=2009},
+                    get_datetbl_from_str(date_format, input_str)
+                )
+            end
+        )
+
+        it(
+            "should read dates from sun weeknum and wday (%Y, %U, %w)",
+            function()
+                local date_format = "file %Y: %U %w"
+                local input_str = "file 2009: 07 0"
+                assert_datetbl_dates_are_equal(
+                    {day=15, month=2, year=2009},
                     get_datetbl_from_str(date_format, input_str)
                 )
             end
