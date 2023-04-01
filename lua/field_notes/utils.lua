@@ -302,6 +302,9 @@ local function day_of_first_wday(wday, year)
     end
 end
 
+local function normalise_datetbl(tbl)
+    return os.date("*t", os.time(tbl))
+end
 
 function M.get_datetbl_from_str(date_format, input_str)
     local _
@@ -335,13 +338,13 @@ function M.get_datetbl_from_str(date_format, input_str)
     -- parse day
     local day = parse_date_format_char('d', date_format, input_str)
     if day then
-        return {year=year, month=month, day=day}
+        return normalise_datetbl({year=year, month=month, day=day})
     end
 
     -- parse day of year
     local dayofyear = parse_date_format_char('j', date_format, input_str)
     if dayofyear then
-        return {year=year, month=1, day=dayofyear}
+        return normalise_datetbl({year=year, month=1, day=dayofyear})
     end
 
     -- parse day of week
@@ -357,7 +360,7 @@ function M.get_datetbl_from_str(date_format, input_str)
         local day_of_first_mon = day_of_first_wday(2, year)
         day = day_of_first_mon + 7 * (weeknum_mon - 1) + (dayofweek - 1)
     end
-    return {year = year, month=1, day=day or 1}
+    return normalise_datetbl({year = year, month=1, day=day or 1})
 end
 
 return M
