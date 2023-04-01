@@ -354,11 +354,11 @@ function M.get_datetbl_from_str(date_format, input_str)
     local weeknum_sun = parse_date_format_char('U', date_format, input_str)
     local weeknum_mon = parse_date_format_char('W', date_format, input_str)
     if weeknum_sun then
-        local day_of_first_sun = day_of_first_wday(1, year)
+        local day_of_first_sun = day_of_first_wday(0, year)
         day = day_of_first_sun + 7 * (weeknum_sun - 1) + (dayofweek)
     elseif weeknum_mon then
-        local day_of_first_mon = day_of_first_wday(2, year)
-        day = day_of_first_mon + 7 * (weeknum_mon - 1) + (dayofweek - 1)
+        local day_of_first_mon = day_of_first_wday(1, year)
+        day = day_of_first_mon + 7 * weeknum_mon + (dayofweek - 1)
     end
     return normalise_datetbl({year = year, month=1, day=day or 1})
 end
