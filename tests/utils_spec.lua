@@ -88,10 +88,36 @@ describe(
         end
 
         it(
-            "should read timestamps",
+            "should read timestamps (%s)",
             function()
                 local date_format = "file_%s"
                 local input_str = "file_1234567891"
+                assert_datetbl_dates_are_equal(
+                    {day=14, month=2, year=2009},
+                    get_datetbl_from_str(date_format, input_str)
+                )
+            end
+        )
+
+        it(
+            "should read dates (%x)",
+            function()
+                local date_format = "file %x"
+                local input_str = "file 14/02/09"
+                assert_datetbl_dates_are_equal(
+                    {day=14, month=2, year=2009},
+                    get_datetbl_from_str(date_format, input_str)
+                )
+            end
+        )
+
+        it(
+            "should read dates (%d_%m_%Y)",
+            function()
+                local date_format = "file-%d-%m-%Y"
+                local input_str = "file-14-2-2009"
+                local output = get_datetbl_from_str(date_format, input_str)
+                print(vim.inspect(output))
                 assert_datetbl_dates_are_equal(
                     {day=14, month=2, year=2009},
                     get_datetbl_from_str(date_format, input_str)
