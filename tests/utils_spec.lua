@@ -199,6 +199,17 @@ describe(
             end
         )
 
+        it(
+            "should fail if year can't be determined",
+            function()
+                local date_format = "file-%m-%d"
+                local input_str = "file-02-14"
+                local status_ok, err_msg = pcall(get_datetbl_from_str, date_format, input_str)
+                assert(not status_ok)
+                assert(string.match(string.lower(tostring(err_msg)), "year cannot be determined"))
+            end
+        )
+
     end
 )
 

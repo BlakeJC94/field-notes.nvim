@@ -325,13 +325,13 @@ function M.get_datetbl_from_str(date_format, input_str)
     local year = parse_date_format_char('Y', date_format, input_str)
     if not year then
         year = parse_date_format_char('y', date_format, input_str)
+        if not year then error("year cannot be determined") end
         if year < 70 then
             year = 2000 + year
         else
             year = 1900 + year
         end
     end
-    if not year then error("NO YEAR FOUND") end
 
     -- parse month
     local month = parse_date_format_char('m', date_format, input_str) or 1
