@@ -296,7 +296,7 @@ end
 
 local function day_of_first_wday(wday, year)
     for i=1,7 do
-        if os.date("*t", os.time({year=year, day=i})).wday == wday then
+        if os.date("*t", os.time({year=year, month=1, day=i})).wday == wday then
             return i
         end
     end
