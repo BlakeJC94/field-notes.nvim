@@ -150,6 +150,30 @@ describe(
                 )
             end
         )
+
+        it(
+            "should read dates from mon weeknum (%Y, %W)",
+            function()
+                local date_format = "file %Y (%W)"
+                local input_str = "file 2009 (06)"
+                assert_datetbl_dates_are_equal(
+                    {day=15, month=2, year=2009},
+                    get_datetbl_from_str(date_format, input_str)
+                )
+            end
+        )
+        it(
+            "should read dates from sun weeknum (%Y, %U)",
+            function()
+                local date_format = "file %Y [%W]"
+                local input_str = "file 2009 [05]"
+                assert_datetbl_dates_are_equal(
+                    {day=8, month=2, year=2009},
+                    get_datetbl_from_str(date_format, input_str)
+                )
+            end
+        )
+
     end
 )
 
