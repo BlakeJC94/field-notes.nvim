@@ -277,11 +277,22 @@ function M.is_timescale(input_str)
 end
 
 local function parse_date_format_char(char, date_format, input_str)
-    local output, search_pattern, _
-    if string.match(date_format, '%%' .. char) then
-        search_pattern, _ = string.gsub(date_format, '%%' .. char, '(%%d+)')
-        output = string.match(input_str, search_pattern)
+    local output, search_pattern, char_matches, _
+    search_pattern, _ = string.gsub(date_format, '%%[^' .. char .. ']', '.+')
+    search_pattern, _ = string.gsub(search_pattern, '([%-])', '%%%1')  -- Escape other regex chars
+    search_pattern, char_matches = string.gsub(search_pattern, '%%' .. char, '(%%d+)')
+    if char_matches == 0 then
+        -- print(table.concat({"Character", "%" .. char, "not found in", date_format}, ' '))
+        return nil
     end
+
+    -- TODO escape other characters in search_pattern
+    search_pattern = string.gsub(search_pattern, '', '')
+    output = string.match(input_str, search_pattern)
+    if not output then
+        error(table.concat({"No match found for", char, "in", input_str, "with search", search_pattern}, ' '))
+    end
+    -- print(table.concat({"Match",output,"found for", char, "in", input_str, "with search", search_pattern,}, ' '))
     return tonumber(output)
 end
 
@@ -298,10 +309,7 @@ function M.get_datetbl_from_str(date_format, input_str)
     local _
 
     -- parse s if present
-    print(vim.inspect(date_format))
-    print(vim.inspect(input_str))
     local timestamp = parse_date_format_char('s', date_format, input_str)
-    print(vim.inspect(timestamp))
     if timestamp then
         return os.date('*t', timestamp)
     end
