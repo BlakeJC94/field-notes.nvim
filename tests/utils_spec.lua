@@ -116,24 +116,24 @@ describe(
         )
 
         it(
-            "should interpret short year values < 70 as 2000s (%y)",
+            "should read short year values < 70 as 2000s (%y)",
             function()
-                local date_format = "file-%y-%m-%d"
-                local input_str = "file-09-02-14"
+                local date_format = "file-%y"
+                local input_str = "file-09"
                 assert_datetbl_dates_are_equal(
-                    {day=14, month=2, year=2009},
+                    {day=1, month=1, year=2009},
                     get_datetbl_from_str(date_format, input_str)
                 )
             end
         )
 
         it(
-            "should interpret short year values >= 70 as 1900s (%y)",
+            "should read short year values >= 70 as 1900s (%y)",
             function()
-                local date_format = "file-%y-%m-%d"
-                local input_str = "file-70-02-14"
+                local date_format = "file-%y"
+                local input_str = "file-70"
                 assert_datetbl_dates_are_equal(
-                    {day=14, month=2, year=1970},
+                    {day=1, month=1, year=1970},
                     get_datetbl_from_str(date_format, input_str)
                 )
             end
