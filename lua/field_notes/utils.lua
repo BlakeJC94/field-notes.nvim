@@ -56,10 +56,10 @@ function M.edit_note(file_dir, title)
 end
 
 function M.get_journal_title(timescale, timestamp)
-    timestamp = timestamp or vim.fn.strftime('%s')
+    timestamp = timestamp or os.time()
     local opts = require("field_notes.opts")
     local date_title_fmt = opts.get().journal_date_title_formats[timescale]
-    return vim.fn.strftime(date_title_fmt, timestamp)
+    return os.date(date_title_fmt, timestamp)
 end
 
 function M.get_journal_dir(timescale)
