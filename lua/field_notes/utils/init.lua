@@ -4,6 +4,15 @@ local strings = require("field_notes.utils.strings")
 M.slugify = strings.slugify
 M.get_datetbl_from_str = strings.get_datetbl_from_str
 
+local buffer = require("field_notes.utils.buffer")
+M.buffer_is_in_field_notes = buffer.is_in_field_notes
+M.buffer_is_in_git_dir = buffer.is_in_git_dir
+M.buffer_is_empty = buffer.is_empty
+M.get_git_branch_from_buffer = buffer.get_git_branch
+M.get_title_from_buffer = buffer.get_title
+M.get_timescale_from_buffer = buffer.get_timescale
+
+
 function M.create_dir(dir_path)
     if vim.fn.filereadable(dir_path) > 0 then
         error("Path at '" .. dir_path .. "' is a file, can't create directory here")
@@ -48,50 +57,10 @@ function M.edit_note(file_dir, title)
     end
 end
 
-local buffer = require("field_notes.utils.buffer")
-M.buffer_is_in_field_notes = buffer.is_in_field_notes
-M.buffer_is_in_git_dir = buffer.is_in_git_dir
-M.buffer_is_empty = buffer.is_empty
-M.get_git_branch_from_buffer = buffer.get_git_branch
-M.get_title_from_buffer = buffer.get_title
-M.get_timescale_from_buffer = buffer.get_timescale
-
-
--- Infers project name and branch name from current directory
--- Returns "<proj>: <branch>" as a string
--- TODO move to notes.lua
-function M.get_note_title()
-    local project_name, branch_name, _
-
-    local project_path
-    branch_name = M.get_git_branch_from_buffer()
-    if branch_name then
-        -- In a git project,
-        -- project name will be the project directory
-        -- and the branch name is the current branch
-        project_path = vim.fn.finddir('.git/..', vim.fn.expand('%:p:h') .. ';')
-        project_name = project_path:match('[^/]+$')
-    else
-        -- Not a git project,
-        -- project name will be the upper directory
-        -- and the branch name is the current directory
-        project_path = vim.cmd.pwd()
-        local project_parent_dirs = vim.fn.split(project_path, '/')
-        local n_parents = #project_parent_dirs
-        project_name = project_parent_dirs[n_parents - 1] or ""
-        branch_name = project_parent_dirs[n_parents] or ""
-    end
-
-    -- Trim any leading punctuation before returning
-    project_name, _ = string.gsub(project_name, '^%p+', '')
-    branch_name, _ = string.gsub(branch_name, '^%p+', '')
-    return project_name .. ": " .. branch_name
-end
-
 function M.is_timescale(input_str)
     input_str = input_str or ""
     local out = false
-    for _, timescale in ipairs({"day", "week", "month" }) do
+    for _, timescale in ipairs({ "day", "week", "month" }) do
         if input_str == timescale then
             out = true
             break
