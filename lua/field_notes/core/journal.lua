@@ -24,6 +24,18 @@ local function apply_steps(timescale, steps, datetbl)
     return datetbl
 end
 
+function M.is_direction(input_str)
+    input_str = input_str or ""
+    local out = false
+    for _, direction in ipairs({"left", "down", "up", "right"}) do
+        if input_str == direction then
+            out = true
+            break
+        end
+    end
+    return out
+end
+
 
 function M.journal(timescale, steps)
     if not timescale then print("FATAL: Invalid timescale"); return end

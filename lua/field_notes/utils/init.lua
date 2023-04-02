@@ -87,19 +87,6 @@ function M.get_note_title()
     return project_name .. ": " .. branch_name
 end
 
--- TODO move to jounrnal.lua
-function M.is_direction(input_str)
-    input_str = input_str or ""
-    local out = false
-    for _, direction in ipairs({"left", "down", "up", "right"}) do
-        if input_str == direction then
-            out = true
-            break
-        end
-    end
-    return out
-end
-
 function M.is_timescale(input_str)
     input_str = input_str or ""
     local out = false

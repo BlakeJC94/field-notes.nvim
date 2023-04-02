@@ -21,15 +21,16 @@ local function set_journal_command()
         vim.api.nvim_create_user_command(
             cmd,
             function(keys)
+                local journal = require("field_notes.core.journal")
                 local subcommand = rawget(keys.fargs, 1)
 
                 if require("field_notes.utils").is_timescale(subcommand) then
                     local steps = rawget(keys.fargs, 2)
-                    require("field_notes.core.journal").journal(subcommand, steps)
+                    journal.journal(subcommand, steps)
                 end
 
-                if require("field_notes.utils").is_direction(subcommand) then
-                    require("field_notes.core.journal").nav(subcommand)
+                if journal.is_direction(subcommand) then
+                    journal.nav(subcommand)
                 end
             end,
             { force = true, nargs = '*', complete = _journal_command_complete }
