@@ -1,32 +1,12 @@
 local M = {}
 
 local strings = require("field_notes.utils.strings")
-
 M.slugify = strings.slugify
-    output_string = string.lower(output_string)
-    output_string = string.gsub(output_string, '[ _%[%]()%{%}%\\%/-.,=%\'%\":;><`]+', '_')
-    output_string = string.gsub(output_string, '^[_]+', '')
-    output_string = string.gsub(output_string, '[_]+$', '')
-    return output_string
-end
 
--- TODO Test
-function M.create_dir(dir_path)
-    if vim.fn.filereadable(dir_path) > 0 then
-        error("Path at '" .. dir_path .. "' is a file, can't create directory here")
-    end
-
-    if vim.fn.isdirectory(dir_path) > 0 then
-        return
-    end
-
-    local prompt = "Directory '" .. dir_path .. "' not found. Would you like to create it? (Y/n) : "
-    local user_option = vim.fn.input(prompt)
-    user_option = string.gsub(user_option, "^[ ]+", "")
-    if string.sub(user_option, 1, 1) == 'Y' then
-        vim.fn.mkdir(dir_path, "p")
-    end
-end
+local dirs = require("field_notes.utils.dirs")
+M.create_dir = dirs.create_dir
+M.get_journal_dir = dirs.get_journal_dir
+M.get_notes_dir = dirs.get_notes_dir
 
 -- TODO Test
 -- TODO Add template and keys to this instead of simply title
@@ -63,29 +43,6 @@ function M.get_journal_title(timescale, timestamp)
     return os.date(date_title_fmt, timestamp)
 end
 
-function M.get_journal_dir(timescale)
-    local opts = require("field_notes.opts")
-    if not timescale then
-        return table.concat({
-            opts.get().field_notes_path,
-            opts.get().journal_dir,
-        }, '/')
-    end
-    local timescale_dir = opts.get().journal_subdirs[timescale]
-    return table.concat({
-        opts.get().field_notes_path,
-        opts.get().journal_dir,
-        timescale_dir,
-    }, '/')
-end
-
-function M.get_notes_dir()
-    local opts = require("field_notes.opts")
-    return table.concat({
-        opts.get().field_notes_path,
-        opts.get().notes_dir,
-    }, '/')
-end
 
 function M.add_field_note_link_at_cursor(filename)
     local link_string = table.concat({"[[", filename, "]]"})
@@ -157,7 +114,6 @@ function M.add_field_note_link_at_current_journal(filename, timescale)
     if _bufnr_already_exists == 0 then
         vim.cmd.bwipeout(file_path)
     end
-
 end
 
 function M.buffer_is_in_field_notes(buf_idx, subdir)
@@ -226,7 +182,6 @@ function M.get_note_title()
 end
 
 -- TODO is_git_dir
--- git rev-parse --git-dir 2> /dev/null;
 function M.is_in_git_project()
     local git_is_installed = (#M.quiet_run_shell("command -v git") > 0)
     if not git_is_installed then return false end
