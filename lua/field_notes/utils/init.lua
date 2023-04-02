@@ -152,20 +152,6 @@ function M.get_note_title()
 end
 
 
--- Outputs a string
-function M.quiet_run_shell(cmd)
-    local _
-    cmd = cmd or ""
-    cmd, _ = string.gsub(cmd, ";$" , "")
-    local result = ""
-    if #cmd > 0 then
-        local quiet_stderr = "2> /dev/null"
-        cmd = cmd .. " " .. quiet_stderr
-        result = io.popen(cmd):read()
-    end
-    return result or {}
-end
-
 function M.is_direction(input_str)
     input_str = input_str or ""
     local out = false

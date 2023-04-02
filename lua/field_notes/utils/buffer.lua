@@ -24,10 +24,24 @@ function M.is_in_field_notes(buf_idx, subdir)
     return false
 end
 
+-- Outputs a string
+local function quiet_run_shell(cmd)
+    local _
+    cmd = cmd or ""
+    cmd, _ = string.gsub(cmd, ";$" , "")
+    local result = ""
+    if #cmd > 0 then
+        local quiet_stderr = "2> /dev/null"
+        cmd = cmd .. " " .. quiet_stderr
+        result = io.popen(cmd):read()
+    end
+    return result or {}
+end
+
 function M.is_in_git_dir(buf_nr)
     buf_nr = buf_nr or 0
 
-    local git_is_installed = (#M.quiet_run_shell("command -v git") > 0)
+    local git_is_installed = (#quiet_run_shell("command -v git") > 0)
     if not git_is_installed then return false end
 
     local buffer_dir = vim.fs.dirname(vim.api.nvim_buf_get_name(buf_nr))
@@ -38,7 +52,7 @@ function M.is_in_git_dir(buf_nr)
         "rev-parse",
         "--git-dir",
     }, ' ')
-    local git_dir_found = (#M.quiet_run_shell(cmd) > 0)
+    local git_dir_found = (#quiet_run_shell(cmd) > 0)
     if not git_dir_found then return false end
     return true
 end
@@ -54,7 +68,7 @@ function M.get_git_branch(buf_nr)
         "--show-current",
         "--quiet",
     }, ' ')
-    local branch_name = M.quiet_run_shell(cmd)
+    local branch_name = quiet_run_shell(cmd)
     return branch_name
 end
 
