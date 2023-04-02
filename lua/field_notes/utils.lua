@@ -369,6 +369,19 @@ function M.get_datetbl_from_str(date_format, input_str)
     return normalise_datetbl({year=year, month=month, day=day})
 end
 
+function M.get_title_from_buffer(bufnr)
+    bufnr = bufnr or 0
+    local content = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+    local title
+    for _, line in ipairs(content) do
+        title = string.match(line, "^#%s(.+)")
+        if title then
+            break
+        end
+    end
+    return title
+end
+
 return M
 
 -- TODO look into vim.uri_from_bufnr

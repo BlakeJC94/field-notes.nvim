@@ -16,27 +16,6 @@ function M.cur_buf_journal_timescale()
     return nil
 end
 
-
--- FIXME
--- function M.cur_buf_journal_timestamp()
---     local timescale = M.cur_buf_journal_timescale()
---     if not timescale then return nil end
-
---     -- Get date format
---     local date_format = opts.get().journal_date_title_formats[timescale]
---     -- Get filename -- FIXME get title of note instead
---     -- local current_filename = string.match(vim.api.nvim_buf_get_name(0), '/([^/]+)%..*$')
---     local current_filepath = vim.api.nvim_buf_get_name(0)
---     local title_of_note = utils.read_title_of_note_from_filepath(current_filepath)
---     -- Get timestamp
---     print("TRACE: date_format", date_format)
---     print("TRACE: title_of_note", title_of_note)
---     local timestamp = vim.fn.strptime(date_format, title_of_note)
---     print("TRACE: from file timestamp", timestamp)
---     return timestamp
--- end
-
-
 local function edit_journal(timescale, timestamp)
     local title = utils.get_journal_title(timescale, timestamp)
     local file_dir = utils.get_journal_dir(timescale)
@@ -57,18 +36,6 @@ local function apply_steps(timescale, steps, datetbl)
     return datetbl
 end
 
-local function get_title_from_buffer(bufnr)
-    bufnr = bufnr or 0
-    local content = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
-    local title
-    for _, line in ipairs(content) do
-        title = string.match(line, "^#%s(.+)")
-        if title then
-            break
-        end
-    end
-    return title
-end
 
 function M.journal(timescale, steps)
     if not timescale then print("FATAL: Invalid timescale"); return end
@@ -80,7 +47,7 @@ function M.journal(timescale, steps)
     end
 
     -- Otherwise, get time from title of jounral buffer and get datetbl
-    local cur_journal_title = get_title_from_buffer(0)
+    local cur_journal_title = utils.get_title_from_buffer(0)
     local cur_buf_journal_timescale = M.cur_buf_journal_timescale()
     local datetbl = utils.get_datetbl_from_str(
         opts.get().journal_date_title_formats[cur_buf_journal_timescale],
