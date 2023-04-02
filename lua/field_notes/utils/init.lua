@@ -3,8 +3,22 @@ local M = {}
 local strings = require("field_notes.utils.strings")
 M.slugify = strings.slugify
 
-local dirs = require("field_notes.utils.dirs")
-M.create_dir = dirs.create_dir
+function M.create_dir(dir_path)
+    if vim.fn.filereadable(dir_path) > 0 then
+        error("Path at '" .. dir_path .. "' is a file, can't create directory here")
+    end
+
+    if vim.fn.isdirectory(dir_path) > 0 then
+        return
+    end
+
+    local prompt = "Directory '" .. dir_path .. "' not found. Would you like to create it? (Y/n) : "
+    local user_option = vim.fn.input(prompt)
+    user_option = string.gsub(user_option, "^[ ]+", "")
+    if string.sub(user_option, 1, 1) == 'Y' then
+        vim.fn.mkdir(dir_path, "p")
+    end
+end
 
 -- TODO Add template and keys to this instead of simply title
 function M.edit_note(file_dir, title)
@@ -33,6 +47,7 @@ function M.edit_note(file_dir, title)
     end
 end
 
+-- TODO Move to journal.lua
 function M.get_journal_title(timescale, timestamp)
     timestamp = timestamp or os.time()
     local opts = require("field_notes.opts")
@@ -40,6 +55,7 @@ function M.get_journal_title(timescale, timestamp)
     return os.date(date_title_fmt, timestamp)
 end
 
+-- TODO Move to link.lua
 function M.add_field_note_link_at_cursor(filename)
     local link_string = table.concat({"[[", filename, "]]"})
     local cursor = vim.api.nvim_win_get_cursor(0)
@@ -49,6 +65,7 @@ function M.add_field_note_link_at_cursor(filename)
     vim.cmd.write()
 end
 
+-- TODO Move to link.lua
 function M.add_field_note_link_at_current_journal(filename, timescale)
     local opts = require("field_notes.opts")
 
@@ -123,6 +140,7 @@ M.get_timescale_from_buffer = buffer.get_timescale
 
 -- Infers project name and branch name from current directory
 -- Returns "<proj>: <branch>" as a string
+-- TODO move to notes.lua
 function M.get_note_title()
     local project_name, branch_name, _
 
@@ -151,7 +169,7 @@ function M.get_note_title()
     return project_name .. ": " .. branch_name
 end
 
-
+-- TODO move to jounrnal.lua
 function M.is_direction(input_str)
     input_str = input_str or ""
     local out = false
@@ -176,6 +194,7 @@ function M.is_timescale(input_str)
     return out
 end
 
+-- TODO Move to string?
 local date = require("field_notes.utils.date")
 M.get_datetbl_from_str = date.get_datetbl_from_str
 
