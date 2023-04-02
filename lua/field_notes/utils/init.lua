@@ -2,6 +2,7 @@ local M = {}
 
 local strings = require("field_notes.utils.strings")
 M.slugify = strings.slugify
+M.get_datetbl_from_str = strings.get_datetbl_from_str
 
 function M.create_dir(dir_path)
     if vim.fn.filereadable(dir_path) > 0 then
@@ -98,10 +99,6 @@ function M.is_timescale(input_str)
     end
     return out
 end
-
--- TODO Move to string?
-local date = require("field_notes.utils.date")
-M.get_datetbl_from_str = date.get_datetbl_from_str
 
 return M
 

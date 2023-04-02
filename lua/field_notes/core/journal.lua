@@ -36,7 +36,6 @@ function M.is_direction(input_str)
     return out
 end
 
-
 function M.journal(timescale, steps)
     if not timescale then print("FATAL: Invalid timescale"); return end
 
