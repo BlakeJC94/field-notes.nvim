@@ -393,7 +393,7 @@ function M.get_timescale_from_buffer(bufnr)
 
     local current_path = vim.api.nvim_buf_get_name(0)
     for _, timescale in ipairs({'day', 'week', 'month'}) do
-        local timescale_path = utils.get_journal_dir(timescale)
+        local timescale_path = M.get_journal_dir(timescale)
         local timescale_path_in_cur_path = string.find(current_path, timescale_path, 1, true)
         if timescale_path_in_cur_path then return timescale end
     end
