@@ -1,7 +1,8 @@
 local M = {}
 
-function M.slugify(input_string)
-    local output_string = input_string
+local strings = require("field_notes.utils.strings")
+
+M.slugify = strings.slugify
     output_string = string.lower(output_string)
     output_string = string.gsub(output_string, '[ _%[%]()%{%}%\\%/-.,=%\'%\":;><`]+', '_')
     output_string = string.gsub(output_string, '^[_]+', '')
