@@ -366,7 +366,7 @@ function M.get_datetbl_from_str(date_format, input_str)
         return normalise_datetbl({year=year, day=day})
     end
 
-    return normalise_datetbl({year=year})
+    return normalise_datetbl({year=year, month=month, day=day})
 end
 
 return M
