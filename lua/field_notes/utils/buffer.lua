@@ -55,7 +55,7 @@ function M.get_timescale(bufnr)
         return nil
     end
 
-    local current_path = vim.api.nvim_buf_get_name(0)
+    local current_path = vim.api.nvim_buf_get_name(bufnr)
     for _, timescale in ipairs({'day', 'week', 'month'}) do
         local timescale_path = M.get_journal_dir(timescale)
         local timescale_path_in_cur_path = string.find(current_path, timescale_path, 1, true)
