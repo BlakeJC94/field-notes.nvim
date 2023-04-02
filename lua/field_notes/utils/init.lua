@@ -127,13 +127,13 @@ function M.get_note_title()
     local project_name, branch_name, _
 
     local project_path
-    if M.buffer_is_in_git_dir() then
+    branch_name = M.get_git_branch_from_buffer()
+    if branch_name then
         -- In a git project,
         -- project name will be the project directory
         -- and the branch name is the current branch
         project_path = vim.fn.finddir('.git/..', vim.fn.expand('%:p:h') .. ';')
         project_name = project_path:match('[^/]+$')
-        branch_name = M.quiet_run_shell('git branch --show-current --quiet')
     else
         -- Not a git project,
         -- project name will be the upper directory
