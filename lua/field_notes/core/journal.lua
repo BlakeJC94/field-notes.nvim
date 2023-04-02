@@ -48,7 +48,7 @@ function M.journal(timescale, steps)
 
     -- Otherwise, get time from title of jounral buffer and get datetbl
     local cur_journal_title = utils.get_title_from_buffer(0)
-    local cur_buf_journal_timescale = M.cur_buf_journal_timescale()
+    local cur_buf_journal_timescale = utils.get_timescale_from_buffer(0)
     local datetbl = utils.get_datetbl_from_str(
         opts.get().journal_date_title_formats[cur_buf_journal_timescale],
         cur_journal_title

@@ -385,6 +385,22 @@ function M.get_title_from_buffer(bufnr)
     return title
 end
 
+function M.get_timescale_from_buffer(bufnr)
+    bufnr = bufnr or 0
+    if not M.buffer_is_in_field_notes(bufnr, "journal") then
+        return nil
+    end
+
+    local current_path = vim.api.nvim_buf_get_name(0)
+    for _, timescale in ipairs({'day', 'week', 'month'}) do
+        local timescale_path = utils.get_journal_dir(timescale)
+        local timescale_path_in_cur_path = string.find(current_path, timescale_path, 1, true)
+        if timescale_path_in_cur_path then return timescale end
+    end
+
+    error("NEVER REACHED")
+end
+
 return M
 
 -- TODO look into vim.uri_from_bufnr
