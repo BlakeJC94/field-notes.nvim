@@ -69,7 +69,7 @@ end
 
 function M.get_title(bufnr)
     bufnr = bufnr or 0
-    if not M.buffer_is_in_field_notes(bufnr) then
+    if not M.is_in_field_notes(bufnr) then
         return nil
     end
     local content = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
@@ -85,7 +85,7 @@ end
 
 function M.get_timescale(bufnr)
     bufnr = bufnr or 0
-    if not M.buffer_is_in_field_notes(bufnr, "journal") then
+    if not M.is_in_field_notes(bufnr, "journal") then
         return nil
     end
 
