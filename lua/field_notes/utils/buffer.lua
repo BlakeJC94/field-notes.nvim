@@ -24,6 +24,25 @@ function M.is_in_field_notes(buf_idx, subdir)
     return false
 end
 
+function M.is_in_git_dir(buf_nr)
+    buf_nr = buf_nr or 0
+
+    local git_is_installed = (#M.quiet_run_shell("command -v git") > 0)
+    if not git_is_installed then return false end
+
+    local buffer_dir = vim.fs.dirname(vim.api.nvim_buf_get_name(buf_nr))
+    local cmd = table.concat({
+        "git",
+        "-C",
+        buffer_dir,
+        "rev-parse",
+        "--git-dir",
+    }, ' ')
+    local git_dir_found = (#M.quiet_run_shell(cmd) > 0)
+    if not git_dir_found then return false end
+    return true
+end
+
 function M.is_empty(buf_idx)
     buf_idx = buf_idx or 0
     local status = false

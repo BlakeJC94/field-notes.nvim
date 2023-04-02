@@ -116,6 +116,7 @@ end
 
 local buffer = require("field_notes.utils.buffer")
 M.buffer_is_in_field_notes = buffer.is_in_field_notes
+M.buffer_is_in_git_dir = buffer.is_in_git_dir
 M.buffer_is_empty = buffer.is_empty
 M.get_title_from_buffer = buffer.get_title
 M.get_title_from_buffer = buffer.get_timescale
@@ -127,7 +128,7 @@ function M.get_note_title()
     local project_name, branch_name, _
 
     local project_path
-    if M.is_in_git_project() then
+    if M.buffer_is_in_git_dir() then
         -- In a git project,
         -- project name will be the project directory
         -- and the branch name is the current branch
@@ -151,16 +152,6 @@ function M.get_note_title()
     return project_name .. ": " .. branch_name
 end
 
--- TODO is_git_dir
-function M.is_in_git_project()
-    local git_is_installed = (#M.quiet_run_shell("command -v git") > 0)
-    if not git_is_installed then return false end
-
-    local git_dir_found = (#M.quiet_run_shell("git rev-parse --git-dir") > 0)
-    if not git_dir_found then return false end
-
-    return true
-end
 
 -- Outputs a string
 function M.quiet_run_shell(cmd)
