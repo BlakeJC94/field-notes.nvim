@@ -98,13 +98,16 @@ function M.get()
   return opts
 end
 
--- TODO validate timescale
 function M.get_journal_dir(timescale)
     if not timescale then
         return table.concat({
             M.get().field_notes_path,
             M.get().journal_dir,
         }, '/')
+    end
+
+    if not require("field_notes.utils").is_timescale(timescale)
+        then error("Invalid timescale")
     end
     local timescale_dir = M.get().journal_subdirs[timescale]
     return table.concat({
