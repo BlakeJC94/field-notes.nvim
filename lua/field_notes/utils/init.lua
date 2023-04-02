@@ -116,6 +116,7 @@ local buffer = require("field_notes.utils.buffer")
 M.buffer_is_in_field_notes = buffer.is_in_field_notes
 M.buffer_is_in_git_dir = buffer.is_in_git_dir
 M.buffer_is_empty = buffer.is_empty
+M.get_git_branch_from_buffer = buffer.get_git_branch
 M.get_title_from_buffer = buffer.get_title
 M.get_title_from_buffer = buffer.get_timescale
 

@@ -43,6 +43,21 @@ function M.is_in_git_dir(buf_nr)
     return true
 end
 
+function M.get_git_branch_name(buf_nr)
+    if not M.is_in_git_dir(buf_nr) then return nil end
+    local buffer_dir = vim.fs.dirname(vim.api.nvim_buf_get_name(buf_nr))
+    local cmd = table.concat({
+        "git",
+        "-C",
+        buffer_dir,
+        "branch",
+        "--show-current",
+        "--quiet",
+    }, ' ')
+    local branch_name = M.quiet_run_shell(cmd)
+    return branch_name
+end
+
 function M.is_empty(buf_idx)
     buf_idx = buf_idx or 0
     local status = false
