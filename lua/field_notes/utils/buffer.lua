@@ -43,7 +43,7 @@ function M.is_in_git_dir(buf_nr)
     return true
 end
 
-function M.get_git_branch_name(buf_nr)
+function M.get_git_branch(buf_nr)
     if not M.is_in_git_dir(buf_nr) then return nil end
     local buffer_dir = vim.fs.dirname(vim.api.nvim_buf_get_name(buf_nr))
     local cmd = table.concat({
