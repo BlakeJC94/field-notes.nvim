@@ -42,42 +42,52 @@ local function edit_journal(timescale, timestamp)
     local file_dir = utils.get_journal_dir(timescale)
     utils.create_dir(file_dir)
     utils.edit_note(file_dir, title)
+    M.set_local_nav_maps()
 end
 
-M._csteps = nil
-local function set_csteps(val)
-    M._csteps = val
-end
-local function get_csteps()
-    if not M._csteps then set_csteps(0) end
-    return M._csteps
+local function apply_steps(timescale, steps, datetbl)
+    steps = steps or 0
+    if timescale == "day" then
+        datetbl.day = datetbl.day + steps
+    elseif timescale == "week" then
+        datetbl.day = datetbl.day + 7 * steps
+    elseif timescale == "month" then
+        datetbl.month = datetbl.month + steps
+    end
+    return datetbl
 end
 
-
+local function get_title_from_buffer(bufnr)
+    bufnr = bufnr or 0
+    local content = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+    local title
+    for _, line in ipairs(content) do
+        title = string.match(line, "^#%s(.+)")
+        if title then
+            break
+        end
+    end
+    return title
+end
 
 function M.journal(timescale, steps)
     if not timescale then print("FATAL: Invalid timescale"); return end
 
-    if not steps then
-        set_csteps(0)
-        steps = 0
+    -- If not in journal buffer, skip steps arg and open journal at current time
+    if not utils.buffer_is_in_field_notes(0, "journal") then
+        edit_journal(timescale)
+        return
     end
 
-    local csteps = get_csteps()
-    csteps = csteps + steps
-    set_csteps(csteps)
-
-    local timestamp = os.date("*t")
-    if timescale == "day" then
-        timestamp.day = timestamp.day + csteps
-    elseif timescale == "week" then
-        timestamp.day = timestamp.day + 7 * csteps
-    elseif timescale == "month" then
-        timestamp.month = timestamp.month + csteps
-    end
-
-    edit_journal(timescale, os.time(timestamp))
-    M.set_local_nav_maps()
+    -- Otherwise, get time from title of jounral buffer and get datetbl
+    local cur_journal_title = get_title_from_buffer(0)
+    local cur_buf_journal_timescale = M.cur_buf_journal_timescale()
+    local datetbl = utils.get_datetbl_from_str(
+        opts.get().journal_date_title_formats[cur_buf_journal_timescale],
+        cur_journal_title
+    )
+    datetbl = apply_steps(timescale, steps, datetbl)
+    edit_journal(timescale, os.time(datetbl))
 end
 
 function M.nav(direction)
