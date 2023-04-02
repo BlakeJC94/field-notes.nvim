@@ -19,27 +19,5 @@ function M.create_dir(dir_path)
     end
 end
 
--- TODO validate timescale
-function M.get_journal_dir(timescale)
-    if not timescale then
-        return table.concat({
-            opts.get().field_notes_path,
-            opts.get().journal_dir,
-        }, '/')
-    end
-    local timescale_dir = opts.get().journal_subdirs[timescale]
-    return table.concat({
-        opts.get().field_notes_path,
-        opts.get().journal_dir,
-        timescale_dir,
-    }, '/')
-end
-
-function M.get_notes_dir()
-    return table.concat({
-        opts.get().field_notes_path,
-        opts.get().notes_dir,
-    }, '/')
-end
 
 return M

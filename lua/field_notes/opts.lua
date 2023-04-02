@@ -98,4 +98,27 @@ function M.get()
   return opts
 end
 
+-- TODO validate timescale
+function M.get_journal_dir(timescale)
+    if not timescale then
+        return table.concat({
+            M.get().field_notes_path,
+            M.get().journal_dir,
+        }, '/')
+    end
+    local timescale_dir = M.get().journal_subdirs[timescale]
+    return table.concat({
+        M.get().field_notes_path,
+        M.get().journal_dir,
+        timescale_dir,
+    }, '/')
+end
+
+function M.get_notes_dir()
+    return table.concat({
+        M.get().field_notes_path,
+        M.get().notes_dir,
+    }, '/')
+end
+
 return M

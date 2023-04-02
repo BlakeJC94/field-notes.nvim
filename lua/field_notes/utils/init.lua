@@ -5,8 +5,6 @@ M.slugify = strings.slugify
 
 local dirs = require("field_notes.utils.dirs")
 M.create_dir = dirs.create_dir
-M.get_journal_dir = dirs.get_journal_dir
-M.get_notes_dir = dirs.get_notes_dir
 
 -- TODO Add template and keys to this instead of simply title
 function M.edit_note(file_dir, title)
@@ -56,7 +54,7 @@ function M.add_field_note_link_at_current_journal(filename, timescale)
 
     -- Open current journal at timescale
     local title = M.get_journal_title(timescale, nil)
-    local file_dir = M.get_journal_dir(timescale)
+    local file_dir = opts.get_journal_dir(timescale)
     local file_path = file_dir .. '/' .. M.slugify(title) .. '.' .. opts.get().file_extension
     if vim.fn.filereadable(file_path) == 0 then
         -- Exit if file doesn't exist

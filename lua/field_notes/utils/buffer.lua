@@ -9,11 +9,11 @@ function M.is_in_field_notes(buf_idx, subdir)
     local field_notes_path = vim.fn.expand(opts.get().field_notes_path)
     if subdir then
         if subdir == "notes" then
-            field_notes_path = M.get_notes_dir()
+            field_notes_path = opts.get_notes_dir()
         elseif subdir == "journal" then
-            field_notes_path = M.get_journal_dir()
+            field_notes_path = opts.get_journal_dir()
         elseif M.is_timescale(subdir) then
-            field_notes_path = M.get_journal_dir(subdir)
+            field_notes_path = opts.get_journal_dir(subdir)
         end
     end
 
@@ -75,8 +75,9 @@ function M.get_timescale(bufnr)
     end
 
     local current_path = vim.api.nvim_buf_get_name(bufnr)
+    local opts = require("field_notes.opts")
     for _, timescale in ipairs({'day', 'week', 'month'}) do
-        local timescale_path = M.get_journal_dir(timescale)
+        local timescale_path = opts.get_journal_dir(timescale)
         local timescale_path_in_cur_path = string.find(current_path, timescale_path, 1, true)
         if timescale_path_in_cur_path then return timescale end
     end

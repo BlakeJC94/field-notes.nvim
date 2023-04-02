@@ -8,7 +8,7 @@ function M.cur_buf_journal_timescale()
 
     local current_path = vim.api.nvim_buf_get_name(0)
     for _, timescale in ipairs({'day', 'week', 'month'}) do
-        local timescale_path = utils.get_journal_dir(timescale)
+        local timescale_path = opts.get_journal_dir(timescale)
         local timescale_path_in_cur_path = string.find(current_path, timescale_path, 1, true)
         if timescale_path_in_cur_path then return timescale end
     end
@@ -18,7 +18,7 @@ end
 
 local function edit_journal(timescale, timestamp)
     local title = utils.get_journal_title(timescale, timestamp)
-    local file_dir = utils.get_journal_dir(timescale)
+    local file_dir = opts.get_journal_dir(timescale)
     utils.create_dir(file_dir)
     utils.edit_note(file_dir, title)
     M.set_local_nav_maps()
