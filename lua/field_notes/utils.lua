@@ -371,6 +371,9 @@ end
 
 function M.get_title_from_buffer(bufnr)
     bufnr = bufnr or 0
+    if not M.buffer_is_in_field_notes(bufnr) then
+        return nil
+    end
     local content = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
     local title
     for _, line in ipairs(content) do
