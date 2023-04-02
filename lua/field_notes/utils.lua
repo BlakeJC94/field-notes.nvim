@@ -276,7 +276,7 @@ end
 
 local function parse_date_format_char(char, date_format, input_str)
     local output, search_pattern, char_matches, _
-    search_pattern, _ = string.gsub(date_format, '%%[^' .. char .. ']', '.+')
+    search_pattern, _ = string.gsub(date_format, '%%[^' .. char .. ']', '%%S+')
     search_pattern, _ = string.gsub(search_pattern, '([%-%(%)%[%]])', '%%%1')  -- Escape other regex chars
     search_pattern, char_matches = string.gsub(search_pattern, '%%' .. char, '(%%d+)')
     if char_matches == 0 then
