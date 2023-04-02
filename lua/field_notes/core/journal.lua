@@ -3,22 +3,10 @@ local M = {}
 local opts = require("field_notes.opts")
 local utils = require("field_notes.utils")
 
-function M.cur_buf_journal_timescale()
-    if not utils.buffer_is_in_field_notes(0, 'journal') then return nil end
-
-    local current_path = vim.api.nvim_buf_get_name(0)
-    for _, timescale in ipairs({'day', 'week', 'month'}) do
-        local timescale_path = utils.get_journal_dir(timescale)
-        local timescale_path_in_cur_path = string.find(current_path, timescale_path, 1, true)
-        if timescale_path_in_cur_path then return timescale end
-    end
-
-    return nil
-end
 
 local function edit_journal(timescale, timestamp)
-    local title = utils.get_journal_title(timescale, timestamp)
-    local file_dir = utils.get_journal_dir(timescale)
+    local title = opts.get_journal_title(timescale, timestamp)
+    local file_dir = opts.get_journal_dir(timescale)
     utils.create_dir(file_dir)
     utils.edit_note(file_dir, title)
     M.set_local_nav_maps()
@@ -36,6 +24,17 @@ local function apply_steps(timescale, steps, datetbl)
     return datetbl
 end
 
+function M.is_direction(input_str)
+    input_str = input_str or ""
+    local out = false
+    for _, direction in ipairs({"left", "down", "up", "right"}) do
+        if input_str == direction then
+            out = true
+            break
+        end
+    end
+    return out
+end
 
 function M.journal(timescale, steps)
     if not timescale then print("FATAL: Invalid timescale"); return end
@@ -65,7 +64,7 @@ function M.nav(direction)
     direction = direction:sub(1, 1)
 
     local direction_mapping = { l=-1, d=-1, u=1, r=1 }
-    local timescale = M.cur_buf_journal_timescale()
+    local timescale = utils.get_timescale_from_buffer()
 
     if direction == "l" or direction == "r" then
         if not timescale then return end

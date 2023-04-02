@@ -98,4 +98,36 @@ function M.get()
   return opts
 end
 
+function M.get_journal_dir(timescale)
+    if not timescale then
+        return table.concat({
+            M.get().field_notes_path,
+            M.get().journal_dir,
+        }, '/')
+    end
+
+    if not require("field_notes.utils").is_timescale(timescale)
+        then error("Invalid timescale")
+    end
+    local timescale_dir = M.get().journal_subdirs[timescale]
+    return table.concat({
+        M.get().field_notes_path,
+        M.get().journal_dir,
+        timescale_dir,
+    }, '/')
+end
+
+function M.get_journal_title(timescale, timestamp)
+    timestamp = timestamp or os.time()
+    local date_title_fmt = M.get().journal_date_title_formats[timescale]
+    return os.date(date_title_fmt, timestamp)
+end
+
+function M.get_notes_dir()
+    return table.concat({
+        M.get().field_notes_path,
+        M.get().notes_dir,
+    }, '/')
+end
+
 return M
