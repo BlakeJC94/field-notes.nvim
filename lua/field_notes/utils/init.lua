@@ -47,14 +47,6 @@ function M.edit_note(file_dir, title)
     end
 end
 
--- TODO Move to journal.lua
-function M.get_journal_title(timescale, timestamp)
-    timestamp = timestamp or os.time()
-    local opts = require("field_notes.opts")
-    local date_title_fmt = opts.get().journal_date_title_formats[timescale]
-    return os.date(date_title_fmt, timestamp)
-end
-
 -- TODO Move to link.lua
 function M.add_field_note_link_at_cursor(filename)
     local link_string = table.concat({"[[", filename, "]]"})
@@ -70,7 +62,7 @@ function M.add_field_note_link_at_current_journal(filename, timescale)
     local opts = require("field_notes.opts")
 
     -- Open current journal at timescale
-    local title = M.get_journal_title(timescale, nil)
+    local title = opts.get_journal_title(timescale, nil)
     local file_dir = opts.get_journal_dir(timescale)
     local file_path = file_dir .. '/' .. M.slugify(title) .. '.' .. opts.get().file_extension
     if vim.fn.filereadable(file_path) == 0 then

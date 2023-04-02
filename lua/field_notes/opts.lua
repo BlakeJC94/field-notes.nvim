@@ -114,6 +114,12 @@ function M.get_journal_dir(timescale)
     }, '/')
 end
 
+function M.get_journal_title(timescale, timestamp)
+    timestamp = timestamp or os.time()
+    local date_title_fmt = M.get().journal_date_title_formats[timescale]
+    return os.date(date_title_fmt, timestamp)
+end
+
 function M.get_notes_dir()
     return table.concat({
         M.get().field_notes_path,

@@ -17,7 +17,7 @@ function M.cur_buf_journal_timescale()
 end
 
 local function edit_journal(timescale, timestamp)
-    local title = utils.get_journal_title(timescale, timestamp)
+    local title = opts.get_journal_title(timescale, timestamp)
     local file_dir = opts.get_journal_dir(timescale)
     utils.create_dir(file_dir)
     utils.edit_note(file_dir, title)
