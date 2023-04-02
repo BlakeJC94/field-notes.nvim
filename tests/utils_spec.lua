@@ -210,6 +210,18 @@ describe(
             end
         )
 
+        it(
+            "should ignore extraneous unsupported formats",
+            function()
+                local date_format = "%Y-M%m: %b"
+                local input_str = "2023-M04: Apr"
+                assert_datetbl_dates_are_equal(
+                    {day=1, month=4, year=2023},
+                    get_datetbl_from_str(date_format, input_str)
+                )
+            end
+        )
+
     end
 )
 
