@@ -14,10 +14,11 @@ local function set_journal_link_augroup()
             group = group,
             pattern = "*." .. opts.get().file_extension,
             callback = function()
+                local link = require("field_notes.core.link")
                 if utils.buffer_is_in_field_notes(0, "notes") then
                     for k, v in pairs(opts.get().auto_add_links_to_journal) do
                         if v then
-                            utils.add_field_note_link_at_current_journal(
+                            link.add_field_note_link_at_current_journal(
                                 utils.slugify(vim.fn.expand("%:t:r")), k
                             )
                         end
