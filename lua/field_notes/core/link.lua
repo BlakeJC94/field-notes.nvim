@@ -60,7 +60,7 @@ function M.add_field_note_link_at_current_journal(filename, timescale)
     -- Open current journal at timescale
     local title = opts.get_journal_title(timescale, nil)
     local file_dir = opts.get_journal_dir(timescale)
-    local file_path = file_dir .. '/' .. M.slugify(title) .. '.' .. opts.get().file_extension
+    local file_path = file_dir .. '/' .. utils.slugify(title) .. '.' .. opts.get().file_extension
     if vim.fn.filereadable(file_path) == 0 then
         -- Exit if file doesn't exist
         return
