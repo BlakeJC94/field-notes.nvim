@@ -3,72 +3,57 @@ local M = {}
 local opts = require("field_notes.opts")
 local utils = require("field_notes.utils")
 
-function M.cur_buf_journal_timescale()
-    local current_path = vim.api.nvim_buf_get_name(0)
-
-    local journal_path = vim.fn.expand(opts.get().field_notes_path .. '/' .. opts.get().journal_dir)
-    local journal_path_in_cur_path = string.find(current_path, journal_path, 1, true)
-    if not journal_path_in_cur_path then return nil end
-
-    for _, timescale in ipairs({'day', 'week', 'month'}) do
-        local timescale_path = journal_path .. '/' .. opts.get().journal_subdirs[timescale]
-        local timescale_path_in_cur_path =string.find(current_path, timescale_path, 1, true)
-        if timescale_path_in_cur_path then return timescale end
-    end
-
-    return nil
-end
 
 local function edit_journal(timescale, timestamp)
-    timestamp = timestamp or os.time()
-
-    local date_title_fmt = opts.get().journal_date_title_formats[timescale]
-    local title = os.date(date_title_fmt, timestamp)
-
-    local timescale_dir = opts.get().journal_subdirs[timescale]
-    local file_dir = table.concat({
-        opts.get().field_notes_path,
-        opts.get().journal_dir,
-        timescale_dir,
-    }, '/')
+    local title = opts.get_journal_title(timescale, timestamp)
+    local file_dir = opts.get_journal_dir(timescale)
     utils.create_dir(file_dir)
     utils.edit_note(file_dir, title)
+    M.set_local_nav_maps()
 end
 
-M._csteps = nil
-local function set_csteps(val)
-    M._csteps = val
-end
-local function get_csteps()
-    if not M._csteps then set_csteps(0) end
-    return M._csteps
+local function apply_steps(timescale, steps, datetbl)
+    steps = steps or 0
+    if timescale == "day" then
+        datetbl.day = datetbl.day + steps
+    elseif timescale == "week" then
+        datetbl.day = datetbl.day + 7 * steps
+    elseif timescale == "month" then
+        datetbl.month = datetbl.month + steps
+    end
+    return datetbl
 end
 
-
+function M.is_direction(input_str)
+    input_str = input_str or ""
+    local out = false
+    for _, direction in ipairs({"left", "down", "up", "right"}) do
+        if input_str == direction then
+            out = true
+            break
+        end
+    end
+    return out
+end
 
 function M.journal(timescale, steps)
     if not timescale then print("FATAL: Invalid timescale"); return end
 
-    if not steps then
-        set_csteps(0)
-        steps = 0
+    -- If not in journal buffer, skip steps arg and open journal at current time
+    if not utils.buffer_is_in_field_notes(0, "journal") then
+        edit_journal(timescale)
+        return
     end
 
-    local csteps = get_csteps()
-    csteps = csteps + steps
-    set_csteps(csteps)
-
-    local timestamp = os.date("*t")
-    if timescale == "day" then
-        timestamp.day = timestamp.day + csteps
-    elseif timescale == "week" then
-        timestamp.day = timestamp.day + 7 * csteps
-    elseif timescale == "month" then
-        timestamp.month = timestamp.month + csteps
-    end
-
-    edit_journal(timescale, os.time(timestamp))
-    M.set_local_nav_maps()
+    -- Otherwise, get time from title of jounral buffer and get datetbl
+    local cur_journal_title = utils.get_title_from_buffer(0)
+    local cur_buf_journal_timescale = utils.get_timescale_from_buffer(0)
+    local datetbl = utils.get_datetbl_from_str(
+        opts.get().journal_date_title_formats[cur_buf_journal_timescale],
+        cur_journal_title
+    )
+    datetbl = apply_steps(timescale, steps, datetbl)
+    edit_journal(timescale, os.time(datetbl))
 end
 
 function M.nav(direction)
@@ -79,7 +64,7 @@ function M.nav(direction)
     direction = direction:sub(1, 1)
 
     local direction_mapping = { l=-1, d=-1, u=1, r=1 }
-    local timescale = M.cur_buf_journal_timescale()
+    local timescale = utils.get_timescale_from_buffer()
 
     if direction == "l" or direction == "r" then
         if not timescale then return end
