@@ -51,7 +51,7 @@ function M.note(keys)
 
     utils.create_dir(notes_dir)
     if utils.buffer_is_in_field_notes(0, 'notes') then
-        local link = require("field_notes.link")
+        local link = require("field_notes.core.link")
         link.add_field_note_link_at_cursor(utils.slugify(title))
     end
     utils.edit_note(notes_dir, title)
