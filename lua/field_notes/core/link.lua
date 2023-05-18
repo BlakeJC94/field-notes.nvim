@@ -51,7 +51,7 @@ function M.add_field_note_link_at_cursor(filename)
     local link_string = table.concat({"[[", filename, "]]"})
     local cursor = vim.api.nvim_win_get_cursor(0)
     local row = cursor[1] - 1
-    local col = cursor[2]
+    local col = cursor[2] + 1
     vim.api.nvim_buf_set_text(0, row, col, row, col, {link_string})
     vim.cmd.write()
 end
