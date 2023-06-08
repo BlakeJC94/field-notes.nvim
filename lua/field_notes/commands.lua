@@ -50,10 +50,21 @@ local function set_link_command()
     end
 end
 
+local function set_goto_index_command()
+    vim.api.nvim_create_user_command(
+        "NotesIndex",
+        function(keys)
+            require("field_notes.core.note").goto_index(keys)
+        end,
+        { force = true, }
+    )
+end
+
 function M.set()
     set_note_command()
     set_journal_command()
     set_link_command()
+    set_goto_index_command()
 end
 
 return M
