@@ -57,5 +57,31 @@ function M.note(keys)
     utils.edit_note(notes_dir, title)
 end
 
+function M.goto_index(_keys)
+    local notes_path = table.concat({
+        opts.get().field_notes_path,
+        opts.get().notes_dir,
+    }, '/')
+    utils.create_dir(notes_path)
+
+    -- Get index path
+    local index_path = table.concat({
+        notes_path,
+        table.concat({
+            opts.get().index_name,
+            opts.get().file_extension
+        }, '.'),
+    }, '/')
+
+    -- Open buffer for index and change local working directory
+    if not utils.buffer_is_in_field_notes() then
+        if not utils.buffer_is_empty() then
+            if opts.get()._vert then vim.cmd.vsplit() else vim.cmd.split() end
+        end
+        vim.cmd.lcd(vim.fn.expand(opts.get().field_notes_path))
+    end
+    vim.cmd.edit(index_path)
+end
+
 return M
 

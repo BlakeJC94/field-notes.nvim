@@ -27,6 +27,7 @@ local default_opts = {
         month = false,
     },
     journal_link_anchor = "## Field notes",
+    index_name = "index",
     _vert = true,
 }
 

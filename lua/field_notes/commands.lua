@@ -50,10 +50,23 @@ local function set_link_command()
     end
 end
 
+local function set_goto_index_command()
+    for _, cmd in ipairs({"I", "FieldNotesIndex"}) do
+        vim.api.nvim_create_user_command(
+            cmd,
+            function(keys)
+                require("field_notes.core.note").goto_index(keys)
+            end,
+            { force = true, }
+        )
+    end
+end
+
 function M.set()
     set_note_command()
     set_journal_command()
     set_link_command()
+    set_goto_index_command()
 end
 
 return M
