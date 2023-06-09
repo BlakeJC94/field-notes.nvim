@@ -28,6 +28,7 @@ local default_opts = {
     },
     journal_link_anchor = "## Field notes",
     index_name = "index",
+    index_new_links_anchor = "## Uncategorised",
     _vert = true,
 }
 
