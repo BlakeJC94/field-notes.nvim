@@ -83,5 +83,13 @@ function M.goto_index(_keys)
     vim.cmd.edit(index_path)
 end
 
+function M.update_index(_keys)
+    -- TODO Goto Index
+    -- TODO Get list of directory contents (subdirs and field-notes)
+    -- TODO Get list of directory contents already on index
+    -- TODO Filter list
+    -- TODO If unlisted entries on index, put at bottom at anchor
+end
+
 return M
 
