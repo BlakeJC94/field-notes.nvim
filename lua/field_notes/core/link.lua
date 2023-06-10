@@ -56,6 +56,8 @@ function M.add_field_note_link_at_cursor(filename)
     vim.cmd.write()
 end
 
+-- TODO rfc
+-- TODO make line detection of title and achor placement md-independent
 function M.add_field_note_link_at_current_journal(filename, timescale)
     -- Open current journal at timescale
     local title = opts.get_journal_title(timescale, nil)
