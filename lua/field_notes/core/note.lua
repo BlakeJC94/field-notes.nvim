@@ -84,11 +84,97 @@ function M.goto_index(_keys)
 end
 
 function M.update_index(_keys)
-    -- TODO Goto Index
-    -- TODO Get list of directory contents (subdirs and field-notes)
-    -- TODO Get list of directory contents already on index
-    -- TODO Filter list
-    -- TODO If unlisted entries on index, put at bottom at anchor
+    local index_path = table.concat({
+        opts.get().field_notes_path,
+        opts.get().notes_dir,
+        table.concat({
+            opts.get().index_name,
+            opts.get().file_extension
+        }, '.'),
+    }, '/')
+    if vim.fn.filereadable(index_path) == 0 then
+        -- Exit if file doesn't exist
+        return
+    end
+
+    -- Load the index file
+    local _bufnr_already_exists = vim.fn.bufexists(index_path)
+    local bufnr = vim.fn.bufadd(index_path)
+    vim.fn.bufload(index_path)
+    -- Get list of lines
+    local index_lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+
+    -- Get list of listed contents and taget link numbers for unlisted block
+    local anchor = opts.get().index_new_links_anchor
+    local anchor_idx
+    local last_link_idx
+    local index_contents = {}
+    for line_idx, line in ipairs(index_lines) do
+        if not anchor_idx and string.match(line, "^" .. anchor) then
+            anchor_idx = line_idx
+            last_link_idx = line_idx
+        end
+
+        -- Record current entries
+        local link_match = string.match(line, "%[%[([^|]+).*%]%]")
+        if link_match then
+            if anchor_idx and line_idx == last_link_idx + 1 then
+                last_link_idx = line_idx
+            else
+                index_contents[#index_contents + 1] = link_match
+            end
+        end
+    end
+
+
+    -- Get list of directory contents (subdirs and field-notes)
+    local index_directory = vim.fs.dirname(index_path)
+    local index_contents_unlisted = {}
+    if not anchor_idx then
+        index_contents_unlisted = {""}
+    end
+    index_contents_unlisted[#index_contents_unlisted + 1] = anchor
+
+    for i in vim.fs.dir(index_directory, {depth = 1}) do
+        local _is_directory = vim.fn.isdirectory(i)
+        local is_directory = _is_directory ~= 0
+
+        local filename = vim.fs.basename(i)
+        local _is_index = string.match(filename, "^" .. opts.get().index_name .. "." .. opts.get().file_extension .. "$")
+        local is_index = _is_index or false
+        local _, _is_hidden = string.gsub(filename, "^%.", "")
+        local is_hidden = _is_hidden ~= 0
+        local link, _is_note = string.gsub(filename, "%." .. opts.get().file_extension .. "$", "")
+        local is_note = _is_note ~= 0
+
+        if is_directory then
+            link = link .. '/'
+        end
+        if not (is_index or is_hidden) and (is_note or is_directory) then
+            local already_recorded = false
+            for _, j in pairs(index_contents) do
+                if j == link then
+                    already_recorded = true
+                    break
+                end
+            end
+            if not already_recorded then
+                index_contents_unlisted[#index_contents_unlisted + 1] = '* [[' .. link .. ']]'
+            end
+        end
+    end
+
+    -- Clear outdated unlisted entries and replace with updated list
+    table.sort(index_contents_unlisted)
+    local start_idx = anchor_idx - 1 or -1
+    local end_idx = last_link_idx or -1
+    vim.api.nvim_buf_set_lines(bufnr, start_idx, end_idx, false, index_contents_unlisted)
+
+    -- Close buffer
+    vim.api.nvim_buf_call(bufnr, function() vim.cmd("silent write") end)
+    if _bufnr_already_exists == 0 then
+        vim.cmd.bwipeout(index_path)
+    end
 end
 
 return M
